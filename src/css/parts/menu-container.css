@@ -1,0 +1,63 @@
+.wangEditor-mobile-menu-container {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 9999;
+  height: 40px;
+  background-color: #111;
+  border: 1px solid #111;
+  border-radius: 8px;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+  transition: opacity .3s;
+}
+.wangEditor-mobile-menu-container .tip {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 10px solid #111;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  top: 0;
+  left: 0;
+  margin-top: -20px;
+}
+.wangEditor-mobile-menu-container .item {
+  box-flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+}
+.wangEditor-mobile-menu-container .item a {
+  text-decoration: none;
+  color: #f1f1f1;
+  display: block;
+  padding: 5px 15px;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+  box-pack: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+}
+.wangEditor-mobile-menu-container .item a i {
+  box-flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  opacity: 1;
+}
+.wangEditor-mobile-menu-container .item .selected {
+  color: #666;
+}
+.wangEditor-mobile-menu-container .gap {
+  width: 1px;
+  height: 40px;
+  margin-top: -1px;
+  background-color: #f1f1f1;
+}
