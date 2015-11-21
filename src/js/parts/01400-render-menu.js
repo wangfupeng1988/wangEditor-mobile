@@ -8,8 +8,16 @@ window.___extendJS(function (E, $) {
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
 
+		// 配置文件中的菜单配置
+		var configMenus = self.config.menus;
+
 		// 遍历菜单配置集合，渲染菜单
-		$.each(menus, function (key, menu) {
+		$.each(configMenus, function (key, menuId) {
+			var menu = menus[menuId];
+			if (menu == null) {
+				return;
+			}
+
 			var $trigger = menu.$trigger;
 			var $wrap = menu.$wrap;
 

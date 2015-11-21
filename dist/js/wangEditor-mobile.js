@@ -139,7 +139,17 @@ window.___extendJS(function (E, $) {
 				'padding': '4px 0 4px 10px',
 				'background-color': '#f1f1f1',
 				'margin': '4px 0'
-			}
+			},
+
+			// 菜单配置
+			menus: [
+				'head',
+				'bold',
+				'color',
+				'quote',
+				'list',
+				'check'
+			]
 		};
 		
 	};
@@ -360,6 +370,7 @@ window.___extendJS(function (E, $) {
 		var self = this;
 		var menus = self.menus || {};
 		var $txt = self.$txt;
+		var configQuoteStyle = self.config.menuQuoteStyle;
 
 		menus[menuId] = {
 			// 是否处于选中状态
@@ -396,13 +407,8 @@ window.___extendJS(function (E, $) {
 
 							// 如果没有标记，则设置样式并记录标记
 							if(hasStyle == null){
-								$quote.css({
-									'display': 'block',
-									'border-left': '5px solid #d0e5f2',
-									'padding': '4px 0 4px 10px',
-									'background-color': '#f1f1f1',
-									'margin': '4px 0'
-								});
+								// configQuoteStyle 是配置的样式，可在 editor.config 中修改
+								$quote.css(configQuoteStyle);
 								$quote.attr(styleKey, '1');
 							}
 						});
@@ -564,8 +570,16 @@ window.___extendJS(function (E, $) {
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
 
+		// 配置文件中的菜单配置
+		var configMenus = self.config.menus;
+
 		// 遍历菜单配置集合，渲染菜单
-		$.each(menus, function (key, menu) {
+		$.each(configMenus, function (key, menuId) {
+			var menu = menus[menuId];
+			if (menu == null) {
+				return;
+			}
+
 			var $trigger = menu.$trigger;
 			var $wrap = menu.$wrap;
 

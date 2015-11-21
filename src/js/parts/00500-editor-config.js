@@ -16,7 +16,17 @@ window.___extendJS(function (E, $) {
 				'padding': '4px 0 4px 10px',
 				'background-color': '#f1f1f1',
 				'margin': '4px 0'
-			}
+			},
+
+			// 菜单配置
+			menus: [
+				'head',
+				'bold',
+				'color',
+				'quote',
+				'list',
+				'check'
+			]
 		};
 		
 	};
