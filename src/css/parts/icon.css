@@ -22,7 +22,9 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
+.icon-wangEditor-m-close:before {
+	content: "\f00d";
+}
 .icon-wangEditor-m-quote-left:before {
 	content: "\f10d";
 }

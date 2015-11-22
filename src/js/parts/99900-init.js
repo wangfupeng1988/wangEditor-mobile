@@ -15,6 +15,7 @@ window.___E_mod(function (E, $) {
 		self.bindTxtEvent();
 		self.bindMenuBtnEvent();
 		self.bindMenuContainerEvent();
+		self.bindMenuContainerOpenBtnEvent();
 	};
 
 });

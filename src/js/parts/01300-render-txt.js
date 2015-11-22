@@ -6,11 +6,12 @@ window.___E_mod(function (E, $) {
 		var $textarea = self.$textarea;
 		var $txt = self.$txt;
 		var $modalContainer = self.$modalContainer;
+		var $body = self.$body;
 
 		$textarea.after($txt);
 		$textarea.hide();
 
-		$('body').append($modalContainer);
+		$body.append($modalContainer);
 	};
 
 });

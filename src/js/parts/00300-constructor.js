@@ -8,6 +8,8 @@
 	var E = function (textareaId) {
 		var self = this;
 
+		self.$body = $('body');
+
 		// textarea
 		var $textarea = $('#' + textareaId);
 		self.$textarea = $textarea;

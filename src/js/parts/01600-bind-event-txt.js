@@ -109,14 +109,29 @@ window.___E_mod(function (E, $) {
 		// blur时，隐藏菜单栏
 		// 存储源代码
 		$txt.on('blur', function (e) {
+
+			// -----------兼容 android begin-----------
+			// 在部分安卓浏览器中，点击menucontainer相关的按钮
+			// 会先触发 blur 然后再触发自己的tap
+			// 这里做一步判断
+
+			if (e.relatedTarget != null) {
+				// e.relatedTarget != null 说明是
+				// 点击menucontainer相关的按钮触发的，直接返回
+				return;
+			}
+
+			// -----------兼容 android begin-----------
+
 			// 记录编辑区域已经 blur
 			self.isFocus = false;
 
-			// 隐藏菜单
-			self.hideMenuContainer();
-
 			// 存储源码代码
 			self.saveSourceCode();
+
+			// 隐藏菜单 fn
+			self.hideMenuContainer();
+			
 		});
 
 		// 阻止 click 事件，防止 tap 点透

@@ -59,6 +59,8 @@
 	var E = function (textareaId) {
 		var self = this;
 
+		self.$body = $('body');
+
 		// textarea
 		var $textarea = $('#' + textareaId);
 		self.$textarea = $textarea;
@@ -189,13 +191,28 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var menus;
 
-		// ------------- menus container ------------- 
-		var $menuContainer = $('<div contentEditable="false" class="wangEditor-mobile-menu-container"></div>');
+		// ------------- menus container  
+		var $menuContainer = $('<div class="wangEditor-mobile-menu-container"></div>');
 		var $menuContainerTip = $('<div class="tip"></div>');  // 三角形
+		var $menuCloseContainer = $('<div class="close"></div>');
+		var $menuClose = $('<a href="#"></a>');
+
+		// 增加小三角 tip
 		$menuContainer.append($menuContainerTip);
 
+		// 增加关闭按钮
+		$menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
+		$menuCloseContainer.append($menuClose);
+		$menuContainer.append($menuCloseContainer);
+
+		// -------- menus container 打开按钮
+		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"><div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div></div>');
+		$menuContainerOpenBtn.append($menuContainerTip.clone());
+
+		// 添加到数据对象
 		self.$menuContainer = $menuContainer;
-		self.$menuContainerTip = $menuContainerTip;
+		self.$menuContainerOpenBtn = $menuContainerOpenBtn;
+		self.$menuClose = $menuClose;
 
 		// ------------- menus 数据集合 ------------- 
 		self.menus = {};
@@ -568,11 +585,12 @@ window.___E_mod(function (E, $) {
 		var $textarea = self.$textarea;
 		var $txt = self.$txt;
 		var $modalContainer = self.$modalContainer;
+		var $body = self.$body;
 
 		$textarea.after($txt);
 		$textarea.hide();
 
-		$('body').append($modalContainer);
+		$body.append($modalContainer);
 	};
 
 });
@@ -583,8 +601,10 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var menus = self.menus;
 		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
+		var $body = self.$body;
 
 		// 配置文件中的菜单配置
 		var configMenus = self.config.menus;
@@ -619,13 +639,15 @@ window.___E_mod(function (E, $) {
 
 		// 默认隐藏
 		$menuContainer.hide();
+		$menuContainerOpenBtn.hide();
 		
-		// 变量记录菜单容器的显示与隐藏
-		self.isMenuShow = false;
+		// 变量记录菜单容器（或者openbtn）的显示与隐藏
+		self.menuDisplayShow = false;
+		$body.append($menuContainer);
 
-		// 最后，将菜单容器渲染到页面中，
-		// $txt.append($menuContainer);
-		$('body').append($menuContainer);
+		// 变量记录当前显示的是菜单还是openbtn
+		self.showMenu = false;
+		$body.append($menuContainerOpenBtn);
 	};
 
 });
@@ -773,14 +795,29 @@ window.___E_mod(function (E, $) {
 		// blur时，隐藏菜单栏
 		// 存储源代码
 		$txt.on('blur', function (e) {
+
+			// -----------兼容 android begin-----------
+			// 在部分安卓浏览器中，点击menucontainer相关的按钮
+			// 会先触发 blur 然后再触发自己的tap
+			// 这里做一步判断
+
+			if (e.relatedTarget != null) {
+				// e.relatedTarget != null 说明是
+				// 点击menucontainer相关的按钮触发的，直接返回
+				return;
+			}
+
+			// -----------兼容 android begin-----------
+
 			// 记录编辑区域已经 blur
 			self.isFocus = false;
 
-			// 隐藏菜单
-			self.hideMenuContainer();
-
 			// 存储源码代码
 			self.saveSourceCode();
+
+			// 隐藏菜单 fn
+			self.hideMenuContainer();
+			
 		});
 
 		// 阻止 click 事件，防止 tap 点透
@@ -794,15 +831,51 @@ window.___E_mod(function (E, $) {
 // 绑定菜单容器事件
 window.___E_mod(function (E, $) {
 
-	// 绑定menucontiner事件
+	// ----------------- 绑定menucontiner事件
 	E.fn.bindMenuContainerEvent = function () {
 		
 		// tap时focus $text
 		var self = this;
 		var $menuContainer = self.$menuContainer;
+		var $menuClose = self.$menuClose;
 
-		// tap时，阻止冒泡，因为上层的 $txt 会监测 tap 事件
+		//tap时，阻止冒泡，因为上层的 $txt 会监测 tap 事件
 		$menuContainer.on('tap', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
+		// 绑定 menucontainer 右上角的关闭按钮事件
+		$menuClose.on('singleTap', function (e) {
+			if (self.checkTapTime() === false) {
+				return;
+			}
+
+			// 显示菜单（下次显示openBtn）
+			self.hideMenuByOpenBtn();
+
+			// 阻止冒泡
+			e.preventDefault();
+			e.stopPropagation();
+		});
+	};
+
+	// ----------------- 绑定 menucontainer openbtn 的事件
+	E.fn.bindMenuContainerOpenBtnEvent = function () {
+		var self = this;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+		var $menuContainer = self.$menuContainer;
+
+		// 点击 openbtn 显示菜单
+		$menuContainerOpenBtn.find('a').on('singleTap', function (e) {
+			if (self.checkTapTime() === false) {
+				return;
+			}
+
+			// openBtn显示菜单
+			self.showMenuByOpenBtn();
+
+			// 阻止冒泡
 			e.preventDefault();
 			e.stopPropagation();
 		});
@@ -886,8 +959,7 @@ window.___E_mod(function (E, $) {
 // menucontainer api
 window.___E_mod(function (E, $) {
 
-	// 显示菜单
-	// 每次显示菜单，都要更新菜单按钮的样式
+	// -------------------显示菜单-------------------
 	E.fn.setMenuContainerPosition = function (touchEvent) {
 		var self = this;
 		var $targetElem = self.eventTarget();
@@ -939,8 +1011,9 @@ window.___E_mod(function (E, $) {
 		var lastChildTop = lastChildOffset.top;
 		var lastChildHeight = lastChildOffset.height;
 
-		// 菜单容器和菜单容器的小三角tip
+		// 菜单容器
 		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 
 		// top 先默认为手指点击的y值
 		var top = y;
@@ -953,49 +1026,62 @@ window.___E_mod(function (E, $) {
 		// 其他样式的结果值
 		var left = txtLeft + 3;
 		var marginTop = 20;
-
-		// 定位
-		$menuContainer.css({
+		var style = {
 			'top': top + 'px',
 			'left': left + 'px',
 			'margin-top': marginTop + 'px'
-		}); 
+		};
+
+		// 定位
+		$menuContainer.css(style); 
+		$menuContainerOpenBtn.css(style);
 
 		// 显示menucontainer
 		self.showMenuContainer();
 	};
 
-	// 显示菜单
+	// -------------------显示菜单-------------------
 	E.fn.showMenuContainer = function () {
 		var self = this;
 		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 
-		if (self.isMenuShow === false) {
-			$menuContainer.show();
-			// 此处要动画效果
-			$menuContainer.css('opacity', '0.9');
+		if (self.menuDisplayShow === false) {
+			if (self.showMenu) {
+				// 要显示的是菜单容器，而非 openbtn
+
+				$menuContainer.show();
+				$menuContainer.css('opacity', '0.9');   // 此处要动画效果
+			} else {
+				$menuContainerOpenBtn.show();
+				$menuContainerOpenBtn.css('opacity', '0.6');
+			}
 
 			// 记录状态
-			self.isMenuShow = true;
+			self.menuDisplayShow = true;
 		}
 	};
 
-	// 隐藏菜单
+	// -------------------隐藏菜单-------------------
 	E.fn.hideMenuContainer = function () {
 		var self = this;
 		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 		var $txt = self.$txt;
 		
 		var $focusElem = self.$focusElem;
 		var $otherFocusElem = $txt.find('.focus-elem'); // 得重新查找，可能发生变化
 
-		if (self.isMenuShow) {
+		if (self.menuDisplayShow) {
+			$menuContainerOpenBtn.hide();
+			$menuContainerOpenBtn.css('opacity', '0');
+
 			$menuContainer.hide();
 			// 此处隐藏之后，在设置透明度。不要动画效果了，效果不好
 			$menuContainer.css('opacity', '0');
 
 			// 记录状态
-			self.isMenuShow = false;
+			self.menuDisplayShow = false;
 
 			// 隐藏 focuselem
 			if ($focusElem) {
@@ -1004,7 +1090,35 @@ window.___E_mod(function (E, $) {
 			}
 		}
 	};
-	
+
+	// -------------------通过openbtn显示菜单-------------------
+	E.fn.showMenuByOpenBtn = function () {
+		var self = this;
+		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+
+		// 记录状态
+		self.showMenu = true;
+			
+		$menuContainer.show();
+		$menuContainer.css('opacity', '0.9');
+
+		$menuContainerOpenBtn.hide();
+		$menuContainerOpenBtn.css('opacity', '0');
+	};
+
+	// -------------------通过openbtn隐藏菜单-------------------
+	E.fn.hideMenuByOpenBtn = function () {
+		var self = this;
+		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+		
+		// 记录状态
+		self.showMenu = false;
+		
+		// 直接调用隐藏menucontainer的方法即可
+		self.hideMenuContainer();
+	};
 });
 // menus api
 window.___E_mod(function (E, $) {
@@ -1203,6 +1317,7 @@ window.___E_mod(function (E, $) {
 		self.bindTxtEvent();
 		self.bindMenuBtnEvent();
 		self.bindMenuContainerEvent();
+		self.bindMenuContainerOpenBtnEvent();
 	};
 
 });

@@ -5,8 +5,10 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var menus = self.menus;
 		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
+		var $body = self.$body;
 
 		// 配置文件中的菜单配置
 		var configMenus = self.config.menus;
@@ -41,13 +43,15 @@ window.___E_mod(function (E, $) {
 
 		// 默认隐藏
 		$menuContainer.hide();
+		$menuContainerOpenBtn.hide();
 		
-		// 变量记录菜单容器的显示与隐藏
-		self.isMenuShow = false;
+		// 变量记录菜单容器（或者openbtn）的显示与隐藏
+		self.menuDisplayShow = false;
+		$body.append($menuContainer);
 
-		// 最后，将菜单容器渲染到页面中，
-		// $txt.append($menuContainer);
-		$('body').append($menuContainer);
+		// 变量记录当前显示的是菜单还是openbtn
+		self.showMenu = false;
+		$body.append($menuContainerOpenBtn);
 	};
 
 });
