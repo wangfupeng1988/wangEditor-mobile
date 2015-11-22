@@ -803,7 +803,8 @@ window.___E_mod(function (E, $) {
 
 			if (e.relatedTarget != null) {
 				// e.relatedTarget != null 说明是
-				// 点击menucontainer相关的按钮触发的，直接返回
+				// 点击menucontainer相关的按钮触发的，阻止并返回
+				e.preventDefault();
 				return;
 			}
 
