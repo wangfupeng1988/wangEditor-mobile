@@ -1,5 +1,5 @@
 // head
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuHead = function (menuId) {
 		var self = this;

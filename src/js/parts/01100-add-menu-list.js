@@ -1,5 +1,5 @@
 // list
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuList = function (menuId) {
 		var self = this;

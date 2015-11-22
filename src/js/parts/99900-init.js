@@ -1,5 +1,5 @@
 // 初始化编辑器对象
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.init = function () {
 		var self = this;

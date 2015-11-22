@@ -1,5 +1,5 @@
 // 编辑器的命令事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 传统事件
 	E.fn.command = function (commandName, bool, commandValue, e, callback) {
@@ -26,10 +26,8 @@ window.___extendJS(function (E, $) {
 		// 执行命令
 		fn();
 
-		// 如果focusElem的后面没有元素了，就增加一个空行
-		if ($txt.children().last().html() !== '<br>') {
-			$txt.append($('<p><br></p>'));
-		}
+		// 如果 $txt 最后没有空行，则增加一个
+		self.insertEmpltyLink();
 
 		// 重新保存选区，因为部分浏览器会自动清空选区
 		self.saveSelection();

@@ -1,5 +1,5 @@
 // 增加自带的菜单数据对象
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenus = function () {
 		var self = this;

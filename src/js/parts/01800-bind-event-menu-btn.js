@@ -1,5 +1,5 @@
 // 绑定菜单按钮的事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.bindMenuBtnEvent = function () {
 		var self = this;

@@ -15,14 +15,14 @@
 		// tapTime将记录每一个tap事件的时间，防止短时间内重复tap
 		self.tapTime = Date.now();
 		self.checkTapTime = function () {
-			// 如果当前时间和上一次tapTime相差50ms之内，则忽略
+			// 如果当前时间和上一次tapTime相差 **ms 之内，则忽略
 			// 否则就继续并更新tapTime
-			if (Date.now() - self.tapTime < 50) {
+			if (Date.now() - self.tapTime < 100) {
 				return false;
-			} else {
-				self.tapTime = Date.now();
-				return true;
 			}
+
+			self.tapTime = Date.now();
+			return true;
 		};
 
 		// ---------接下来即初始化各个组件配置----------

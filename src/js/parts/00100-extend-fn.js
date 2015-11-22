@@ -2,7 +2,7 @@
 (function (window) {
 
 	// 注意：3个下划线
-	window.___extendJS = function (fn) {
+	window.___E_mod = function (fn) {
 		var E = window.___E;
 		if (E == null) {
 			// 说明一开始的验证没有通过，直接返回即可

@@ -1,5 +1,5 @@
 // 绑定编辑区域事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.bindTxtEvent = function () {
 		var self = this;
@@ -8,7 +8,7 @@ window.___extendJS(function (E, $) {
 
 		// 处理点击 $txt 的选区
 		// $txt 的 tap 事件中调用
-		function selectionHeadle() {
+		function selectionHeadle () {
 			var focusElem;
 			var $focusElem;
 
@@ -48,8 +48,12 @@ window.___extendJS(function (E, $) {
 				return;
 			}
 
+			// 获取 target 并保存
+			var $target = $(e.target);
+			self.eventTarget($target);
+
 			// 如果当前点击的就是上一次点击的元素，则隐藏菜单栏
-			if ($(e.target).hasClass('focus-elem')) {
+			if ($target.hasClass('focus-elem')) {
 				// 隐藏菜单
 				self.hideMenuContainer();
 				// 返回
@@ -57,7 +61,7 @@ window.___extendJS(function (E, $) {
 			}
 
 			// 根据点击的位置，对菜单栏进行定位
-			self.setMenuContainerPosition(self.touchEvent, $(e.target));
+			self.setMenuContainerPosition(self.touchEvent);
 
 			// 如果有上一次选中的元素，则清除样式
 			var $focusElem = self.$focusElem;

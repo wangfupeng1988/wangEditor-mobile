@@ -1,5 +1,5 @@
 // menus api
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 	
 	// 更新菜单样式
 	E.fn.updateMenuStyle = function () {

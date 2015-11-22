@@ -1,5 +1,5 @@
 // 初始化对象配置
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.initDefaultConfig = function () {
 		var self = this;

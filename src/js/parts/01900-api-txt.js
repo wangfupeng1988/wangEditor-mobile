@@ -1,5 +1,5 @@
 // $txt api
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// focus API
 	E.fn.focusTxt = function () {
@@ -7,6 +7,16 @@ window.___extendJS(function (E, $) {
 		var $txt = self.$txt;
 
 		$txt.focus();
+	};
+
+	// 保存、获取 $txt tap时event对象的target元素
+	E.fn.eventTarget = function ($elem) {
+		var self = this;
+		if ($elem == null) {
+			return self.$eventTargetElem;
+		} else {
+			self.$eventTargetElem = $elem;
+		}
 	};
 
 	// 保存源代码
@@ -25,6 +35,22 @@ window.___extendJS(function (E, $) {
 		// 获取源码
 		sourceCode = $txtClone.html();
 		$textarea.val(sourceCode);
+	};
+
+	// 在编辑区域最后插入空行
+	E.fn.insertEmpltyLink = function () {
+		var self = this;
+		var $txt = self.$txt;
+		var $children = $txt.children();
+
+		if ($children.length === 0) {
+			$txt.append($('<p><br></p>'));
+			return;
+		}
+
+		if ($children.last().html() !== '<br>') {
+			$txt.append($('<p><br></p>'));
+		}
 	};
 
 });

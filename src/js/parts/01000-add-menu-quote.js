@@ -1,5 +1,5 @@
 // quote
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuQuote = function (menuId) {
 		var self = this;
@@ -25,14 +25,31 @@ window.___extendJS(function (E, $) {
 					}
 
 					// 执行命令
-					var value = 'blockquote';
+					var $focusElem = self.$focusElem;
+					var text;
+					var commandFn;
 					if (menuData.selected) {
-						value = 'p';
-					}
-					self.command('formatblock', false, value, e);
+						// 此时已经是 quote 状态，此时点击，应该恢复为普通文字
+						
+						// 获取文本
+						text = $focusElem.text();
 
-					// 处理样式
-					if (value === 'blockquote') {
+						// 定义一个自定义的命令事件
+						commandFn = function () {
+							var $p = $('<p>' + text + '</p>');
+							$focusElem.after($p);
+							$focusElem.remove();
+						};
+
+						// 执行盖自定义事件
+						self.customCommand(commandFn, e);
+
+					} else {
+						// 当前不是quote状态
+
+						// 执行命令，将段落设置为quote
+						self.command('formatblock', false, 'blockquote', e);
+
 						// 设置quote样式（刚刚被设置为quote）
 						self.$txt.find('blockquote').each(function(key, node){
 							// 遍历编辑区域所有的quote
@@ -47,7 +64,8 @@ window.___extendJS(function (E, $) {
 								$quote.attr(styleKey, '1');
 							}
 						});
-					} // 处理样式
+
+					} // else
 				});
 			},
 

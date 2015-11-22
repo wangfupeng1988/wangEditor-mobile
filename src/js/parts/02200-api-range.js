@@ -1,5 +1,5 @@
 // range selection 的相关操作
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 设置或读取当前的range
 	E.fn.currentRange = function (cr){
@@ -21,19 +21,40 @@ window.___extendJS(function (E, $) {
 
 	// 获取 wrapRange 的元素（不能是text类型） 
 	E.fn.getWrapRangeElem = function () {
+		var self = this;
+		var $txt = self.$txt;
+		var txtClass = $txt.attr('class');     // 获取编辑区域的class
+
 		var wrapRange = this.currentWrapRange();
 		var elem;
+		var resultElem;
+
+		var eventTargetElem = self.eventTarget().get(0);
+
 		if (wrapRange == null) {
 			return;
 		}
 
+		// 获取 range 的包含元素
 		elem = wrapRange.commonAncestorContainer;
+
 		if (elem.nodeType === 3) {
-			// text类型，则返回父元素
-			elem = elem.parentNode;
+			// text类型，获取父元素
+			resultElem = elem.parentNode;
+		} else {
+			// 不是 text 类型
+			resultElem = elem;
 		}
 
-		return elem;
+		// 判断 resultElem 是不是 $txt （通过 class 判断）
+		if (resultElem.className === txtClass) {
+			// 如果 resultElem 正好是 $txt
+			// 则将 resultElem 试图设置为 $txt 最后一个子元素
+			resultElem = $txt.children().last().get(0) || resultElem;
+		}
+
+		// 返回
+		return resultElem;
 	};
 
 	// 保存选择区域

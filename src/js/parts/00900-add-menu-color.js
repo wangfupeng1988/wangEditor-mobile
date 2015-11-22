@@ -1,5 +1,5 @@
 // color
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuColor = function (menuId) {
 		var self = this;

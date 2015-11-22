@@ -1,5 +1,5 @@
 // 绑定菜单容器事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 绑定menucontiner事件
 	E.fn.bindMenuContainerEvent = function () {

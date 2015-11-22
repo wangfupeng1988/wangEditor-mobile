@@ -1,5 +1,5 @@
 // 渲染菜单栏
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.renderMenu = function () {
 		var self = this;

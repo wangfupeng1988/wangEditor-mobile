@@ -1,5 +1,5 @@
 // editor API 对外开放的接口
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	
 

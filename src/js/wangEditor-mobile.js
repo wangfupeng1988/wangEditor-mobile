@@ -2,7 +2,7 @@
 (function (window) {
 
 	// 注意：3个下划线
-	window.___extendJS = function (fn) {
+	window.___E_mod = function (fn) {
 		var E = window.___E;
 		if (E == null) {
 			// 说明一开始的验证没有通过，直接返回即可
@@ -66,14 +66,14 @@
 		// tapTime将记录每一个tap事件的时间，防止短时间内重复tap
 		self.tapTime = Date.now();
 		self.checkTapTime = function () {
-			// 如果当前时间和上一次tapTime相差50ms之内，则忽略
+			// 如果当前时间和上一次tapTime相差 **ms 之内，则忽略
 			// 否则就继续并更新tapTime
-			if (Date.now() - self.tapTime < 50) {
+			if (Date.now() - self.tapTime < 100) {
 				return false;
-			} else {
-				self.tapTime = Date.now();
-				return true;
 			}
+
+			self.tapTime = Date.now();
+			return true;
 		};
 
 		// ---------接下来即初始化各个组件配置----------
@@ -116,13 +116,13 @@
 
 })(window, window.Zepto);
 // 初始化静态配置文件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.config = {};
 	
 });
 // 初始化对象配置
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.initDefaultConfig = function () {
 		var self = this;
@@ -156,17 +156,12 @@ window.___extendJS(function (E, $) {
 	
 });
 // 初始化编辑区域的数据对象
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addTxt = function () {
 		var self = this;
 		var $textarea = self.$textarea;
 		var val = $.trim($textarea.val());
-
-		// $txt 一定要有内容，否则 menuContainer 定位有问题
-		if (!val) {
-			val = '<p><br></p>';
-		}
 
 		// 编辑区域（将textarea的值，直接复制过来）
 		var $txt = $(
@@ -181,11 +176,14 @@ window.___extendJS(function (E, $) {
 		// 记录到对象中
 		self.$txt = $txt;
 		self.$modalContainer = $modalContainer;
+
+		// 最后插入一个空行
+		self.insertEmpltyLink();
 	};
 	
 });
 // 增加自带的菜单数据对象
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenus = function () {
 		var self = this;
@@ -213,7 +211,7 @@ window.___extendJS(function (E, $) {
 
 });
 // bold
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuBold = function (menuId) {
 		var self = this;
@@ -260,7 +258,7 @@ window.___extendJS(function (E, $) {
 
 });
 // head
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuHead = function (menuId) {
 		var self = this;
@@ -311,7 +309,7 @@ window.___extendJS(function (E, $) {
 	
 });
 // color
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuColor = function (menuId) {
 		var self = this;
@@ -364,7 +362,7 @@ window.___extendJS(function (E, $) {
 
 });
 // quote
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuQuote = function (menuId) {
 		var self = this;
@@ -390,14 +388,31 @@ window.___extendJS(function (E, $) {
 					}
 
 					// 执行命令
-					var value = 'blockquote';
+					var $focusElem = self.$focusElem;
+					var text;
+					var commandFn;
 					if (menuData.selected) {
-						value = 'p';
-					}
-					self.command('formatblock', false, value, e);
+						// 此时已经是 quote 状态，此时点击，应该恢复为普通文字
+						
+						// 获取文本
+						text = $focusElem.text();
 
-					// 处理样式
-					if (value === 'blockquote') {
+						// 定义一个自定义的命令事件
+						commandFn = function () {
+							var $p = $('<p>' + text + '</p>');
+							$focusElem.after($p);
+							$focusElem.remove();
+						};
+
+						// 执行盖自定义事件
+						self.customCommand(commandFn, e);
+
+					} else {
+						// 当前不是quote状态
+
+						// 执行命令，将段落设置为quote
+						self.command('formatblock', false, 'blockquote', e);
+
 						// 设置quote样式（刚刚被设置为quote）
 						self.$txt.find('blockquote').each(function(key, node){
 							// 遍历编辑区域所有的quote
@@ -412,7 +427,8 @@ window.___extendJS(function (E, $) {
 								$quote.attr(styleKey, '1');
 							}
 						});
-					} // 处理样式
+
+					} // else
 				});
 			},
 
@@ -435,7 +451,7 @@ window.___extendJS(function (E, $) {
 
 });
 // list
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuList = function (menuId) {
 		var self = this;
@@ -481,7 +497,7 @@ window.___extendJS(function (E, $) {
 
 });
 // check
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuCheck = function (menuId) {
 		var self = this;
@@ -545,7 +561,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 渲染编辑器区域
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.renderTxt = function () {
 		var self = this;
@@ -561,7 +577,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 渲染菜单栏
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.renderMenu = function () {
 		var self = this;
@@ -614,7 +630,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 绑定document事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.bindDocumentEvent = function () {
 		var $document = $(document);
@@ -647,7 +663,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 绑定编辑区域事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.bindTxtEvent = function () {
 		var self = this;
@@ -656,7 +672,7 @@ window.___extendJS(function (E, $) {
 
 		// 处理点击 $txt 的选区
 		// $txt 的 tap 事件中调用
-		function selectionHeadle() {
+		function selectionHeadle () {
 			var focusElem;
 			var $focusElem;
 
@@ -696,8 +712,12 @@ window.___extendJS(function (E, $) {
 				return;
 			}
 
+			// 获取 target 并保存
+			var $target = $(e.target);
+			self.eventTarget($target);
+
 			// 如果当前点击的就是上一次点击的元素，则隐藏菜单栏
-			if ($(e.target).hasClass('focus-elem')) {
+			if ($target.hasClass('focus-elem')) {
 				// 隐藏菜单
 				self.hideMenuContainer();
 				// 返回
@@ -705,7 +725,7 @@ window.___extendJS(function (E, $) {
 			}
 
 			// 根据点击的位置，对菜单栏进行定位
-			self.setMenuContainerPosition(self.touchEvent, $(e.target));
+			self.setMenuContainerPosition(self.touchEvent);
 
 			// 如果有上一次选中的元素，则清除样式
 			var $focusElem = self.$focusElem;
@@ -772,7 +792,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 绑定菜单容器事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 绑定menucontiner事件
 	E.fn.bindMenuContainerEvent = function () {
@@ -790,7 +810,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 绑定菜单按钮的事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.bindMenuBtnEvent = function () {
 		var self = this;
@@ -808,7 +828,7 @@ window.___extendJS(function (E, $) {
 
 });
 // $txt api
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// focus API
 	E.fn.focusTxt = function () {
@@ -816,6 +836,16 @@ window.___extendJS(function (E, $) {
 		var $txt = self.$txt;
 
 		$txt.focus();
+	};
+
+	// 保存、获取 $txt tap时event对象的target元素
+	E.fn.eventTarget = function ($elem) {
+		var self = this;
+		if ($elem == null) {
+			return self.$eventTargetElem;
+		} else {
+			self.$eventTargetElem = $elem;
+		}
 	};
 
 	// 保存源代码
@@ -836,23 +866,66 @@ window.___extendJS(function (E, $) {
 		$textarea.val(sourceCode);
 	};
 
+	// 在编辑区域最后插入空行
+	E.fn.insertEmpltyLink = function () {
+		var self = this;
+		var $txt = self.$txt;
+		var $children = $txt.children();
+
+		if ($children.length === 0) {
+			$txt.append($('<p><br></p>'));
+			return;
+		}
+
+		if ($children.last().html() !== '<br>') {
+			$txt.append($('<p><br></p>'));
+		}
+	};
+
 });
 // menucontainer api
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 显示菜单
 	// 每次显示菜单，都要更新菜单按钮的样式
-	E.fn.setMenuContainerPosition = function (touchEvent, $focusElem) {
+	E.fn.setMenuContainerPosition = function (touchEvent) {
 		var self = this;
+		var $targetElem = self.eventTarget();
 
-		var x = touchEvent.pageX;
+		// 获取 touchstart 事件中手指触屏的位置
 		var y = touchEvent.pageY;
 		
-		// var focusElemOffset = $focusElem.offset();
-		// var focusElemTop = focusElemOffset.top;
-		// var focusElemHeight = focusElemOffset.height;
+		// 获取tap事件中target元素的位置和尺寸
+		var targetElemOffset = $targetElem.offset();
+		var targetElemTop = targetElemOffset.top;
+		var targetElemHeight = targetElemOffset.height;
 
+
+		// -----------------------兼容 android begin ---------------------------
+		// 因为部分 android 获取不到 touchEvent.pageY，菜单栏总是定位在最上方
+
+		// 如果 touchstart 事件中手指触屏的位置无效（都是 0）
+		// 则将 y 设置为target元素的位置
+		if (y === 0) {
+			y = targetElemTop + targetElemHeight;
+		}
+
+		// 获取编辑区域 $txt 的位置和尺寸
 		var $txt = self.$txt;
+		var txtOffset = $txt.offset();
+		var txtTop = txtOffset.top;
+		var txtLeft = txtOffset.left;
+		var txtHeight = txtOffset.height;
+
+		// 如果超出了 $txt 的范围，则限制一下 y 的大小，限制在 $txt 最底部
+		if (y > txtTop + txtHeight) {
+			y = txtTop + txtHeight - 10;
+		}
+
+		// -----------------------兼容 android end ---------------------------
+		
+
+		// 获取编辑区域 $txt 的最后一个子元素（如果没有就强行加一个空行）
 		var $children = $txt.children();
 		var $lastChild;
 		if ($children.length === 0) {
@@ -861,49 +934,35 @@ window.___extendJS(function (E, $) {
 		} else {
 			$lastChild = $children.last();
 		}
+		// 获取最后一个子元素的尺寸和位置
 		var lastChildOffset = $lastChild.offset();
 		var lastChildTop = lastChildOffset.top;
 		var lastChildHeight = lastChildOffset.height;
 
+		// 菜单容器和菜单容器的小三角tip
 		var $menuContainer = self.$menuContainer;
-		var menuContainerWidth;
-		var $menuContainerTip = self.$menuContainerTip;
-		var tipMarginLeft;
 
 		// top 先默认为手指点击的y值
 		var top = y;
-		if (y > lastChildTop + lastChildHeight) {
+		if (top > lastChildTop + lastChildHeight) {
 			// 如果手指点击的地方在 $txt 最后一个子元素的下方，
 			// 则将 top 值定义为 $txt 最后一个子元素的最底部
 			top = lastChildTop + lastChildHeight;
 		}
 
 		// 其他样式的结果值
-		var left = x;
+		var left = txtLeft + 3;
 		var marginTop = 20;
-		var marginLeft = 0 - x + 10;
 
 		// 定位
 		$menuContainer.css({
 			'top': top + 'px',
 			'left': left + 'px',
-			'margin-left': marginLeft + 'px',
 			'margin-top': marginTop + 'px'
 		}); 
 
 		// 显示menucontainer
 		self.showMenuContainer();
-
-		// 最后定位显示tip三角形
-		tipMarginLeft = 0 - marginLeft - 10;
-		if (tipMarginLeft <= 10) {
-			tipMarginLeft = 10;
-		}
-		menuContainerWidth = $menuContainer.offset().width;
-		if (tipMarginLeft > (menuContainerWidth - 30)) {
-			tipMarginLeft = menuContainerWidth - 30;
-		}
-		$menuContainerTip.css('margin-left', tipMarginLeft + 'px');
 	};
 
 	// 显示菜单
@@ -913,6 +972,7 @@ window.___extendJS(function (E, $) {
 
 		if (self.isMenuShow === false) {
 			$menuContainer.show();
+			// 此处要动画效果
 			$menuContainer.css('opacity', '0.9');
 
 			// 记录状态
@@ -931,6 +991,7 @@ window.___extendJS(function (E, $) {
 
 		if (self.isMenuShow) {
 			$menuContainer.hide();
+			// 此处隐藏之后，在设置透明度。不要动画效果了，效果不好
 			$menuContainer.css('opacity', '0');
 
 			// 记录状态
@@ -946,7 +1007,7 @@ window.___extendJS(function (E, $) {
 	
 });
 // menus api
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 	
 	// 更新菜单样式
 	E.fn.updateMenuStyle = function () {
@@ -964,7 +1025,7 @@ window.___extendJS(function (E, $) {
 
 });
 // 编辑器的命令事件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 传统事件
 	E.fn.command = function (commandName, bool, commandValue, e, callback) {
@@ -991,10 +1052,8 @@ window.___extendJS(function (E, $) {
 		// 执行命令
 		fn();
 
-		// 如果focusElem的后面没有元素了，就增加一个空行
-		if ($txt.children().last().html() !== '<br>') {
-			$txt.append($('<p><br></p>'));
-		}
+		// 如果 $txt 最后没有空行，则增加一个
+		self.insertEmpltyLink();
 
 		// 重新保存选区，因为部分浏览器会自动清空选区
 		self.saveSelection();
@@ -1018,7 +1077,7 @@ window.___extendJS(function (E, $) {
 	};
 });
 // range selection 的相关操作
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	// 设置或读取当前的range
 	E.fn.currentRange = function (cr){
@@ -1040,19 +1099,40 @@ window.___extendJS(function (E, $) {
 
 	// 获取 wrapRange 的元素（不能是text类型） 
 	E.fn.getWrapRangeElem = function () {
+		var self = this;
+		var $txt = self.$txt;
+		var txtClass = $txt.attr('class');     // 获取编辑区域的class
+
 		var wrapRange = this.currentWrapRange();
 		var elem;
+		var resultElem;
+
+		var eventTargetElem = self.eventTarget().get(0);
+
 		if (wrapRange == null) {
 			return;
 		}
 
+		// 获取 range 的包含元素
 		elem = wrapRange.commonAncestorContainer;
+
 		if (elem.nodeType === 3) {
-			// text类型，则返回父元素
-			elem = elem.parentNode;
+			// text类型，获取父元素
+			resultElem = elem.parentNode;
+		} else {
+			// 不是 text 类型
+			resultElem = elem;
 		}
 
-		return elem;
+		// 判断 resultElem 是不是 $txt （通过 class 判断）
+		if (resultElem.className === txtClass) {
+			// 如果 resultElem 正好是 $txt
+			// 则将 resultElem 试图设置为 $txt 最后一个子元素
+			resultElem = $txt.children().last().get(0) || resultElem;
+		}
+
+		// 返回
+		return resultElem;
 	};
 
 	// 保存选择区域
@@ -1101,13 +1181,13 @@ window.___extendJS(function (E, $) {
 
 });
 // editor API 对外开放的接口
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	
 
 });
 // 初始化编辑器对象
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.init = function () {
 		var self = this;

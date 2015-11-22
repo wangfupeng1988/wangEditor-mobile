@@ -1,5 +1,5 @@
 // bold
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.addMenuBold = function (menuId) {
 		var self = this;

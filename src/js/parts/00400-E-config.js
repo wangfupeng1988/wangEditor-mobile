@@ -1,5 +1,5 @@
 // 初始化静态配置文件
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.config = {};
 	

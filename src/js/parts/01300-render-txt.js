@@ -1,5 +1,5 @@
 // 渲染编辑器区域
-window.___extendJS(function (E, $) {
+window.___E_mod(function (E, $) {
 
 	E.fn.renderTxt = function () {
 		var self = this;
