@@ -805,6 +805,7 @@ window.___E_mod(function (E, $) {
 				// e.relatedTarget != null 说明是
 				// 点击menucontainer相关的按钮触发的，阻止并返回
 				e.preventDefault();
+				$txt.focus();
 				return;
 			}
 
