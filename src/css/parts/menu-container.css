@@ -7,12 +7,7 @@
   background-color: #111;
   border: 1px solid #111;
   border-radius: 8px;
-  display: box;
-  display: -webkit-box;
-  display: -moz-box;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  box-align: center;
+  box-shadow: 2px 2px 5px #999;
   transition: opacity .3s;
 }
 .wangEditor-mobile-menu-container-open-btn .tip,
@@ -33,30 +28,40 @@
 .wangEditor-mobile-menu-container .close {
   position: absolute;
   z-index: 10000;
-  top: -15px;
-  right: -15px;
-  height: 25px;
-  width: 25px;
+  top: 3px;
+  right: -40px;
+  height: 30px;
+  width: 30px;
   text-align: center;
   border-radius: 50%;
   border: 1px solid #f1f1f1;
   background-color: #666;
+  box-shadow: 0 0 5px #999;
 }
 .wangEditor-mobile-menu-container-open-btn .close i,
 .wangEditor-mobile-menu-container .close i {
   text-decoration: none;
   color: #f1f1f1;
   display: inline-block;
-  padding: 4px 3px;
+  padding: 6px 5px;
 }
-.wangEditor-mobile-menu-container-open-btn .item,
-.wangEditor-mobile-menu-container .item {
+.wangEditor-mobile-menu-container-open-btn .item-container,
+.wangEditor-mobile-menu-container .item-container {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+}
+.wangEditor-mobile-menu-container-open-btn .item-container .item,
+.wangEditor-mobile-menu-container .item-container .item {
   box-flex: 1;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
 }
-.wangEditor-mobile-menu-container-open-btn .item a,
-.wangEditor-mobile-menu-container .item a {
+.wangEditor-mobile-menu-container-open-btn .item-container .item a,
+.wangEditor-mobile-menu-container .item-container .item a {
   text-decoration: none;
   color: #f1f1f1;
   display: block;
@@ -71,19 +76,19 @@
   -webkit-box-pack: center;
   -moz-box-pack: center;
 }
-.wangEditor-mobile-menu-container-open-btn .item a i,
-.wangEditor-mobile-menu-container .item a i {
+.wangEditor-mobile-menu-container-open-btn .item-container .item a i,
+.wangEditor-mobile-menu-container .item-container .item a i {
   box-flex: 1;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   opacity: 1;
 }
-.wangEditor-mobile-menu-container-open-btn .item .selected,
-.wangEditor-mobile-menu-container .item .selected {
+.wangEditor-mobile-menu-container-open-btn .item-container .item .selected,
+.wangEditor-mobile-menu-container .item-container .item .selected {
   color: #666;
 }
-.wangEditor-mobile-menu-container-open-btn .gap,
-.wangEditor-mobile-menu-container .gap {
+.wangEditor-mobile-menu-container-open-btn .item-container .gap,
+.wangEditor-mobile-menu-container .item-container .gap {
   width: 1px;
   height: 40px;
   margin-top: -1px;

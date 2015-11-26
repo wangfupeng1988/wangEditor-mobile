@@ -193,6 +193,7 @@ window.___E_mod(function (E, $) {
 
 		// ------------- menus container  
 		var $menuContainer = $('<div class="wangEditor-mobile-menu-container"></div>');
+		var $menuItemContainer = $('<div class="item-container"></div>');
 		var $menuContainerTip = $('<div class="tip"></div>');  // 三角形
 		var $menuCloseContainer = $('<div class="close"></div>');
 		var $menuClose = $('<a href="#"></a>');
@@ -203,14 +204,20 @@ window.___E_mod(function (E, $) {
 		// 增加关闭按钮
 		$menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
 		$menuCloseContainer.append($menuClose);
+		$menuContainer.append($menuItemContainer);
+
+		// 菜单项的容器
 		$menuContainer.append($menuCloseContainer);
 
 		// -------- menus container 打开按钮
-		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"><div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div></div>');
+		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"></div>');
+		var $menuContainerOpenBtnItemContaier = $('<div class="item-container"> <div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div> </div>');
+		$menuContainerOpenBtn.append($menuContainerOpenBtnItemContaier);
 		$menuContainerOpenBtn.append($menuContainerTip.clone());
 
 		// 添加到数据对象
 		self.$menuContainer = $menuContainer;
+		self.$menuItemContainer = $menuItemContainer;
 		self.$menuContainerOpenBtn = $menuContainerOpenBtn;
 		self.$menuClose = $menuClose;
 
@@ -601,6 +608,7 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var menus = self.menus;
 		var $menuContainer = self.$menuContainer;
+		var $menuItemContainer = self.$menuItemContainer;
 		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
@@ -623,19 +631,19 @@ window.___E_mod(function (E, $) {
 				// 渲染菜单
 				if ($wrap) {
 					$wrap.append($trigger);
-					$menuContainer.append($wrap);
+					$menuItemContainer.append($wrap);
 				} else {
-					$menuContainer.append($trigger);
+					$menuItemContainer.append($trigger);
 				}
 				
 				// 菜单之间的间隙
 				// 之所以需要加 clone 是因为 append 由一种『单例移动』的特性！！需注意！！
-				$menuContainer.append($gap.clone());
+				$menuItemContainer.append($gap.clone());
 			}
 		});
 
 		// 删除最后一个间隙（即最后一个子元素）
-		$menuContainer.children().last().remove();
+		$menuItemContainer.children().last().remove();
 
 		// 默认隐藏
 		$menuContainer.hide();
@@ -690,6 +698,10 @@ window.___E_mod(function (E, $) {
 	E.fn.bindTxtEvent = function () {
 		var self = this;
 		var $txt = self.$txt;
+		var $menuContainer = self.$menuContainer;
+		var menuContainer = $menuContainer.get(0);
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+		var menuContainerOpenBtn = $menuContainerOpenBtn.get(0);
 		var srollTime = Date.now();
 
 		// 处理点击 $txt 的选区
@@ -720,10 +732,6 @@ window.___E_mod(function (E, $) {
 			// 记录编辑器区域已经focus
 			self.isFocus = true;
 		});
-		$txt.on('touchstart', function (e) {
-			// 记录touch使的event对象，可以获取点击的位置
-			self.touchEvent = e;
-		});
 		$txt.on('singleTap', function (e) {
 			if (self.checkTapTime() === false) {
 				return;
@@ -738,16 +746,20 @@ window.___E_mod(function (E, $) {
 			var $target = $(e.target);
 			self.eventTarget($target);
 
-			// 如果当前点击的就是上一次点击的元素，则隐藏菜单栏
 			if ($target.hasClass('focus-elem')) {
-				// 隐藏菜单
+				// 如果当前点击的就是上一次点击的元素，则隐藏菜单栏，返回
 				self.hideMenuContainer();
-				// 返回
+				return;
+			}
+
+			if ($target.hasClass('wangEditor-mobile-txt')) {
+				// 如果当前选中的编辑区域，则隐藏菜单，返回
+				self.hideMenuContainer();
 				return;
 			}
 
 			// 根据点击的位置，对菜单栏进行定位
-			self.setMenuContainerPosition(self.touchEvent);
+			self.setMenuContainerPosition();
 
 			// 如果有上一次选中的元素，则清除样式
 			var $focusElem = self.$focusElem;
@@ -796,23 +808,37 @@ window.___E_mod(function (E, $) {
 		// 存储源代码
 		$txt.on('blur', function (e) {
 
+			// 记录编辑区域已经 blur
+			self.isFocus = false;
+
 			// -----------兼容 android begin-----------
 			// 在部分安卓浏览器中，点击menucontainer相关的按钮
 			// 会先触发 blur 然后再触发自己的tap
 			// 这里做一步判断
 
-			if (e.relatedTarget != null) {
+			var focusTxtFn = self.focusTxt;
+
+			var explicitOriginalTarget = e.explicitOriginalTarget;
+			if (menuContainer.contains(explicitOriginalTarget) || menuContainerOpenBtn.contains(explicitOriginalTarget)) {
+				// firefox 中，
+				// e.explicitOriginalTarget 包含再菜单容器中，说明
+				// 是由菜单容器的按钮点击触发的该事件
+				setTimeout(focusTxtFn.call(self), 300);
+				e.preventDefault();
+				return;
+			}
+
+			var relatedTarget = e.relatedTarget;
+			if (relatedTarget != null) {
+				// chrome中
 				// e.relatedTarget != null 说明是
 				// 点击menucontainer相关的按钮触发的，阻止并返回
+				setTimeout(focusTxtFn.call(self), 300);
 				e.preventDefault();
-				$txt.focus();
 				return;
 			}
 
 			// -----------兼容 android begin-----------
-
-			// 记录编辑区域已经 blur
-			self.isFocus = false;
 
 			// 存储源码代码
 			self.saveSourceCode();
@@ -910,7 +936,9 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var $txt = self.$txt;
 
-		$txt.focus();
+		if (!self.isFocus) {
+			$txt.focus();
+		}
 	};
 
 	// 保存、获取 $txt tap时event对象的target元素
@@ -962,27 +990,17 @@ window.___E_mod(function (E, $) {
 window.___E_mod(function (E, $) {
 
 	// -------------------显示菜单-------------------
-	E.fn.setMenuContainerPosition = function (touchEvent) {
+	E.fn.setMenuContainerPosition = function () {
 		var self = this;
 		var $targetElem = self.eventTarget();
-
-		// 获取 touchstart 事件中手指触屏的位置
-		var y = touchEvent.pageY;
 		
 		// 获取tap事件中target元素的位置和尺寸
 		var targetElemOffset = $targetElem.offset();
 		var targetElemTop = targetElemOffset.top;
 		var targetElemHeight = targetElemOffset.height;
 
-
-		// -----------------------兼容 android begin ---------------------------
-		// 因为部分 android 获取不到 touchEvent.pageY，菜单栏总是定位在最上方
-
-		// 如果 touchstart 事件中手指触屏的位置无效（都是 0）
-		// 则将 y 设置为target元素的位置
-		if (y === 0) {
-			y = targetElemTop + targetElemHeight;
-		}
+		// 获取目标元素最下方的位置
+		var y = targetElemTop + targetElemHeight;
 
 		// 获取编辑区域 $txt 的位置和尺寸
 		var $txt = self.$txt;
@@ -995,8 +1013,6 @@ window.___E_mod(function (E, $) {
 		if (y > txtTop + txtHeight) {
 			y = txtTop + txtHeight - 10;
 		}
-
-		// -----------------------兼容 android end ---------------------------
 		
 
 		// 获取编辑区域 $txt 的最后一个子元素（如果没有就强行加一个空行）

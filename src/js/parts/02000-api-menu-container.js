@@ -2,27 +2,17 @@
 window.___E_mod(function (E, $) {
 
 	// -------------------显示菜单-------------------
-	E.fn.setMenuContainerPosition = function (touchEvent) {
+	E.fn.setMenuContainerPosition = function () {
 		var self = this;
 		var $targetElem = self.eventTarget();
-
-		// 获取 touchstart 事件中手指触屏的位置
-		var y = touchEvent.pageY;
 		
 		// 获取tap事件中target元素的位置和尺寸
 		var targetElemOffset = $targetElem.offset();
 		var targetElemTop = targetElemOffset.top;
 		var targetElemHeight = targetElemOffset.height;
 
-
-		// -----------------------兼容 android begin ---------------------------
-		// 因为部分 android 获取不到 touchEvent.pageY，菜单栏总是定位在最上方
-
-		// 如果 touchstart 事件中手指触屏的位置无效（都是 0）
-		// 则将 y 设置为target元素的位置
-		if (y === 0) {
-			y = targetElemTop + targetElemHeight;
-		}
+		// 获取目标元素最下方的位置
+		var y = targetElemTop + targetElemHeight;
 
 		// 获取编辑区域 $txt 的位置和尺寸
 		var $txt = self.$txt;
@@ -35,8 +25,6 @@ window.___E_mod(function (E, $) {
 		if (y > txtTop + txtHeight) {
 			y = txtTop + txtHeight - 10;
 		}
-
-		// -----------------------兼容 android end ---------------------------
 		
 
 		// 获取编辑区域 $txt 的最后一个子元素（如果没有就强行加一个空行）

@@ -11,10 +11,7 @@
 	background-color: #111;
 	border: 1px solid #111;
 	border-radius: 8px;
-
-	.display-box();
-	.box-align(center);
-
+	box-shadow: 2px 2px 5px #999;
 	transition: opacity .3s;
 
 	.tip {
@@ -34,51 +31,57 @@
 	.close {
 		position: absolute;
 		z-index: 10000;
-		top: -15px;
-		right: -15px;
-		height: 25px;
-		width: 25px;
+		top: 3px;
+		right: -40px;
+		height: 30px;
+		width: 30px;
 		text-align: center;
 		border-radius: 50%;
 		border: 1px solid #f1f1f1;
 		background-color: #666;
+		box-shadow: 0 0 5px #999;
 		
 		i {
 			text-decoration: none;
 			color: #f1f1f1;
 			display: inline-block;
-			padding: 4px 3px;
+			padding: 6px 5px;
 		}
 	}
 
-	.item {
-		.box-flex(1);
+	.item-container {
+		.display-box();
+		.box-align(center);
 
-		a {
-			text-decoration: none;
-			color: #f1f1f1;
-			display: block;
-			padding: 5px 15px;
+		.item {
+			.box-flex(1);
 
-			.display-box();
-			.box-align(center);
-			.box-pack(center);
+			a {
+				text-decoration: none;
+				color: #f1f1f1;
+				display: block;
+				padding: 5px 15px;
 
-			i {
-				.box-flex(1);
-				opacity: 1;
+				.display-box();
+				.box-align(center);
+				.box-pack(center);
+
+				i {
+					.box-flex(1);
+					opacity: 1;
+				}
+			}
+
+			.selected {
+				color: #666;
 			}
 		}
 
-		.selected {
-			color: #666;
+		.gap {
+			width: 1px;
+			height: 40px;
+			margin-top: -1px;
+			background-color: #f1f1f1;
 		}
-	}
-
-	.gap {
-		width: 1px;
-		height: 40px;
-		margin-top: -1px;
-		background-color: #f1f1f1;
 	}
 }

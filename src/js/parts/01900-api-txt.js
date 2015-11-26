@@ -6,7 +6,9 @@ window.___E_mod(function (E, $) {
 		var self = this;
 		var $txt = self.$txt;
 
-		$txt.focus();
+		if (!self.isFocus) {
+			$txt.focus();
+		}
 	};
 
 	// 保存、获取 $txt tap时event对象的target元素

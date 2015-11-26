@@ -7,6 +7,7 @@ window.___E_mod(function (E, $) {
 
 		// ------------- menus container  
 		var $menuContainer = $('<div class="wangEditor-mobile-menu-container"></div>');
+		var $menuItemContainer = $('<div class="item-container"></div>');
 		var $menuContainerTip = $('<div class="tip"></div>');  // 三角形
 		var $menuCloseContainer = $('<div class="close"></div>');
 		var $menuClose = $('<a href="#"></a>');
@@ -17,14 +18,20 @@ window.___E_mod(function (E, $) {
 		// 增加关闭按钮
 		$menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
 		$menuCloseContainer.append($menuClose);
+		$menuContainer.append($menuItemContainer);
+
+		// 菜单项的容器
 		$menuContainer.append($menuCloseContainer);
 
 		// -------- menus container 打开按钮
-		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"><div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div></div>');
+		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"></div>');
+		var $menuContainerOpenBtnItemContaier = $('<div class="item-container"> <div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div> </div>');
+		$menuContainerOpenBtn.append($menuContainerOpenBtnItemContaier);
 		$menuContainerOpenBtn.append($menuContainerTip.clone());
 
 		// 添加到数据对象
 		self.$menuContainer = $menuContainer;
+		self.$menuItemContainer = $menuItemContainer;
 		self.$menuContainerOpenBtn = $menuContainerOpenBtn;
 		self.$menuClose = $menuClose;
 
