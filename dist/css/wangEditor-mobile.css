@@ -92,8 +92,8 @@
 .wangEditor-mobile-menu-container .close {
   position: absolute;
   z-index: 10000;
-  top: 3px;
-  right: -40px;
+  top: -23px;
+  right: -25px;
   height: 30px;
   width: 30px;
   text-align: center;
@@ -159,6 +159,30 @@
   background-color: #f1f1f1;
 }
 
+.wangEditor-mobile-modal {
+  box-sizing: border-box;
+  display: none;
+  position: absolute;
+  width: 80%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  top: 25%;
+  left: 50%;
+  box-shadow: 0 0 10px #666;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+}
+.wangEditor-mobile-modal * {
+  box-sizing: border-box;
+}
+.wangEditor-mobile-modal .command-link {
+  padding: 5px;
+}
 
 body {
   -webkit-overflow-scrolling: touch;

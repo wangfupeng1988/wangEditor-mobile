@@ -3,7 +3,6 @@ window.___E_mod(function (E, $) {
 
 	E.fn.addMenus = function () {
 		var self = this;
-		var menus;
 
 		// ------------- menus container  
 		var $menuContainer = $('<div class="wangEditor-mobile-menu-container"></div>');
@@ -36,15 +35,15 @@ window.___E_mod(function (E, $) {
 		self.$menuClose = $menuClose;
 
 		// ------------- menus 数据集合 ------------- 
-		self.menus = {};
-		menus = self.menus;
-
+		self.menus = {};		
 		self.addMenuBold('bold');
 		self.addMenuHead('head');
 		self.addMenuColor('color');
 		self.addMenuQuote('quote');
 		self.addMenuList('list');
 		self.addMenuCheck('check');
+		self.addMenuHappy('happy');
+		self.addMenuImg('img');
 	};
 
 });

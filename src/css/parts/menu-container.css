@@ -28,8 +28,8 @@
 .wangEditor-mobile-menu-container .close {
   position: absolute;
   z-index: 10000;
-  top: 3px;
-  right: -40px;
+  top: -23px;
+  right: -25px;
   height: 30px;
   width: 30px;
   text-align: center;

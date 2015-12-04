@@ -34,8 +34,8 @@ module.exports = function(grunt) {
         dest: 'src/css/parts/menu-container.css'
       },
       modalContainer: {
-        src: 'src/css/parts/modal-container.less',
-        dest: 'src/css/parts/modal-container.css'
+        src: 'src/css/parts/modal.less',
+        dest: 'src/css/parts/modal.css'
       }
     },
 

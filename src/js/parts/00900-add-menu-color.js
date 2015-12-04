@@ -3,7 +3,7 @@ window.___E_mod(function (E, $) {
 
 	E.fn.addMenuColor = function (menuId) {
 		var self = this;
-		var menus = self.menus || {};
+		var menus = self.menus;
 		var configColor = self.config.menuColorValue;
 
 		menus[menuId] = {

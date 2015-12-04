@@ -25,8 +25,40 @@ window.___E_mod(function (E, $) {
 				'color',
 				'quote',
 				'list',
-				'check'
-			]
+				'img',
+				'happy'//,
+				//'check'
+			],
+
+			// 表情图标配置
+			happy: [
+				'http://wangeditor.github.io/expressions/1.gif',
+				'http://wangeditor.github.io/expressions/2.gif',
+				'http://wangeditor.github.io/expressions/3.gif',
+				'http://wangeditor.github.io/expressions/4.gif',
+				'http://wangeditor.github.io/expressions/5.gif',
+				'http://wangeditor.github.io/expressions/6.gif',
+				'http://wangeditor.github.io/expressions/7.gif',
+				'http://wangeditor.github.io/expressions/8.gif',
+				'http://wangeditor.github.io/expressions/9.gif',
+				'http://wangeditor.github.io/expressions/10.gif',
+				'http://wangeditor.github.io/expressions/11.gif',
+				'http://wangeditor.github.io/expressions/12.gif',
+				'http://wangeditor.github.io/expressions/13.gif',
+				'http://wangeditor.github.io/expressions/14.gif',
+				'http://wangeditor.github.io/expressions/15.gif',
+				'http://wangeditor.github.io/expressions/16.gif',
+				'http://wangeditor.github.io/expressions/17.gif',
+				'http://wangeditor.github.io/expressions/18.gif',
+				'http://wangeditor.github.io/expressions/19.gif',
+				'http://wangeditor.github.io/expressions/20.gif'
+			],
+
+			// 上传图片
+			uploadImgUrl: '/upload',
+
+			// 测试地址（在测试地址，编辑器会主动输出一些console.log信息）
+			testHostname: 'localhost'
 		};
 		
 	};

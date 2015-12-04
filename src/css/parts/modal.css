@@ -1,0 +1,24 @@
+.wangEditor-mobile-modal {
+  box-sizing: border-box;
+  display: none;
+  position: absolute;
+  width: 80%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  top: 25%;
+  left: 50%;
+  box-shadow: 0 0 10px #666;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+}
+.wangEditor-mobile-modal * {
+  box-sizing: border-box;
+}
+.wangEditor-mobile-modal .command-link {
+  padding: 5px;
+}

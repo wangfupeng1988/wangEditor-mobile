@@ -3,7 +3,7 @@ window.___E_mod(function (E, $) {
 
 	E.fn.addMenuCheck = function (menuId) {
 		var self = this;
-		var menus = self.menus || {};
+		var menus = self.menus;
 
 		menus[menuId] = {
 			// 是否处于选中状态
@@ -50,7 +50,7 @@ window.___E_mod(function (E, $) {
 					var fn = function () {
 						self.$focusElem.after($content);
 					};
-					self.customCommand(fn, e);
+					self.customCommand(false, fn, e);
 				});
 			},
 

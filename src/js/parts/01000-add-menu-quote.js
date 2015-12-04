@@ -3,7 +3,7 @@ window.___E_mod(function (E, $) {
 
 	E.fn.addMenuQuote = function (menuId) {
 		var self = this;
-		var menus = self.menus || {};
+		var menus = self.menus;
 		var $txt = self.$txt;
 		var configQuoteStyle = self.config.menuQuoteStyle;
 
@@ -42,7 +42,7 @@ window.___E_mod(function (E, $) {
 						};
 
 						// 执行盖自定义事件
-						self.customCommand(commandFn, e);
+						self.customCommand(false, commandFn, e);
 
 					} else {
 						// 当前不是quote状态

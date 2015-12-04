@@ -3,7 +3,7 @@ window.___E_mod(function (E, $) {
 
 	E.fn.addMenuHead = function (menuId) {
 		var self = this;
-		var menus = self.menus || {};
+		var menus = self.menus;
 
 		menus[menuId] = {
 			// 是否处于选中状态

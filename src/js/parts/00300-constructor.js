@@ -48,17 +48,19 @@
 	// console.log 函数
 	E.log = function (a, b) {
 		if (window.console) {
-			if (b) {
-				console.log(a, b);
-			} else {
-				console.log(a);
-			}
+			if (b) { console.log(a, b); } else { console.log(a); }
 		} else {
 			alert(a);
-
-			if (b) {
-				alert(b);
-			}
+			if (b) { alert(b); }
+		}
+	};
+	// console.warn 函数
+	E.warn = function (a, b) {
+		if (window.console) {
+			if (b) { console.warn(a, b); } else { console.warn(a); }
+		} else {
+			alert(a);
+			if (b) { alert(b); }
 		}
 	};
 
