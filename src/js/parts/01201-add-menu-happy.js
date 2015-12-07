@@ -52,7 +52,7 @@ window.___E_mod(function (E, $) {
 
 				// 绑定表情图标的事件
 				$modal.on('singleTap', '.command-link', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy command-link') === false) {
 						return;
 					}
 
@@ -109,7 +109,7 @@ window.___E_mod(function (E, $) {
 				// one绑定的方法只执行一次
 				// 用于渲染 modal 元素并显示
 				$trigger.one('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy one') === false) {
 						return;
 					}
 
@@ -120,7 +120,7 @@ window.___E_mod(function (E, $) {
 				// on 绑定的方法每次都执行
 				// 用于每次显示和隐藏modal
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy on') === false) {
 						return;
 					}
 

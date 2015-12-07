@@ -16,18 +16,20 @@ window.___E_mod(function (E, $) {
 		});
 
 		// 绑定 menucontainer 右上角的关闭按钮事件
-		$menuClose.on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
-				return;
-			}
+		if ($menuClose != null) {
+			$menuClose.on('singleTap', function (e) {
+				if (self.checkTapTime(e, '$menuClose') === false) {
+					return;
+				}
 
-			// 显示菜单（下次显示openBtn）
-			self.hideMenuByOpenBtn();
+				// 显示菜单（下次显示openBtn）
+				self.hideMenuByOpenBtn();
 
-			// 阻止冒泡
-			e.preventDefault();
-			e.stopPropagation();
-		});
+				// 阻止冒泡
+				e.preventDefault();
+				e.stopPropagation();
+			});
+		}
 	};
 
 	// ----------------- 绑定 menucontainer openbtn 的事件
@@ -38,7 +40,7 @@ window.___E_mod(function (E, $) {
 
 		// 点击 openbtn 显示菜单
 		$menuContainerOpenBtn.find('a').on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
+			if (self.checkTapTime(e, '$menuContainerOpenBtn') === false) {
 				return;
 			}
 

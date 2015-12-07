@@ -20,25 +20,38 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'quote') === false) {
 						return;
 					}
 
 					// 执行命令
 					var $focusElem = self.$focusElem;
+					var $quoteElem;
 					var text;
 					var commandFn;
 					if (menuData.selected) {
 						// 此时已经是 quote 状态，此时点击，应该恢复为普通文字
 						
+						// 获取当前的 quote 元素
+						if ($focusElem.get(0).nodeName === 'BLOCKQUOTE') {
+							$quoteElem = $focusElem;
+						} else {
+							$quoteElem = $focusElem.closest('blockquote');
+						}
+
+						if ($quoteElem.length === 0) {
+							// 没有找到 blockquote 元素
+							return;
+						}
+
 						// 获取文本
-						text = $focusElem.text();
+						text = $quoteElem.text();
 
 						// 定义一个自定义的命令事件
 						commandFn = function () {
 							var $p = $('<p>' + text + '</p>');
-							$focusElem.after($p);
-							$focusElem.remove();
+							$quoteElem.after($p);
+							$quoteElem.remove();
 						};
 
 						// 执行盖自定义事件

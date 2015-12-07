@@ -116,7 +116,7 @@ window.___E_mod(function (E, $) {
 
 				// 点击菜单，触发 input 事件
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'img') === false) {
 						return;
 					}
 

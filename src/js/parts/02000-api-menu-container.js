@@ -54,7 +54,7 @@ window.___E_mod(function (E, $) {
 		}
 
 		// 其他样式的结果值
-		var left = txtLeft + 3;
+		var left = txtLeft + 1;
 		var marginTop = 20;
 		var style = {
 			'top': top + 'px',
@@ -135,6 +135,9 @@ window.___E_mod(function (E, $) {
 
 		$menuContainerOpenBtn.hide();
 		$menuContainerOpenBtn.css('opacity', '0');
+
+		// 开始点击次数的记录
+		self.tapNumForHideMenu = 0;
 	};
 
 	// -------------------通过openbtn隐藏菜单-------------------
@@ -148,5 +151,8 @@ window.___E_mod(function (E, $) {
 		
 		// 直接调用隐藏menucontainer的方法即可
 		self.hideMenuContainer();
+
+		// 取消点击次数的记录
+		self.tapNumForHideMenu = null;
 	};
 });

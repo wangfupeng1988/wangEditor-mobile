@@ -6,7 +6,7 @@ window.___E_mod(function (E, $) {
 
 		self.config = {
 			
-			// 菜单栏中的 color 按钮点击时的颜色值
+			// 菜单栏中的 color 按钮点击时的颜色值（即css中的颜色值）
 			menuColorValue: 'red',
 
 			// 菜单栏中的 quote 按钮点击时的样式
@@ -58,7 +58,10 @@ window.___E_mod(function (E, $) {
 			uploadImgUrl: '/upload',
 
 			// 测试地址（在测试地址，编辑器会主动输出一些console.log信息）
-			testHostname: 'localhost'
+			testHostname: 'localhost',
+
+			// 通过 openBtn 打开菜单之后，N次不执行command就自动隐藏
+			tapNumForHideMenu: 3
 		};
 		
 	};

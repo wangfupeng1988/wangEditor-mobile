@@ -21,7 +21,7 @@ window.___E_mod(function (E, $) {
 				var $trigger = menuDate.$trigger;
 
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'color') === false) {
 						return;
 					}
 

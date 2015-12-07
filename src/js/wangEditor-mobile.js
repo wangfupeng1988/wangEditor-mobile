@@ -65,17 +65,42 @@
 		var $textarea = $('#' + textareaId);
 		self.$textarea = $textarea;
 
-		// tapTime将记录每一个tap事件的时间，防止短时间内重复tap
-		self.tapTime = Date.now();
-		self.checkTapTime = function () {
-			// 如果当前时间和上一次tapTime相差 **ms 之内，则忽略
-			// 否则就继续并更新tapTime
-			if (Date.now() - self.tapTime < 100) {
-				return false;
+		// 记录每一个tap事件的时间，防止短时间内重复tap
+		self.checkTapTime = function (e, info) {
+			//E.log('checkTapTime', info);
+
+			var currentElem;
+			var $currentElem;
+			var result = true;
+
+			if (e) {
+				// 传入 event 对象，则为每个event对象分配事件
+				currentElem = e.currentTarget || e.target;
+				$currentElem = $(currentElem);
+			} else {
+				// 未传入，则都用body
+				$currentElem = self.$body;
 			}
 
-			self.tapTime = Date.now();
-			return true;
+			if ($currentElem.data('tapTime') == null) {
+				// 第一次，直接通过
+				$currentElem.data('tapTime', Date.now().toString());
+				result = true;
+			} else {
+				if (Date.now() - parseInt($currentElem.data('tapTime')) < 100) {
+					// 如果当前时间和上一次tapTime相差 **ms 之内，
+					// 则视为无效，并阻止冒泡和默认行为
+					e.preventDefault();
+					e.stopPropagation();
+					result = false;
+				} else {
+					// 否则就继续并更新tapTime
+					$currentElem.data('tapTime', Date.now().toString());
+					result = true;
+				}
+			}
+
+			return result;
 		};
 
 		// ---------接下来即初始化各个组件配置----------
@@ -133,7 +158,7 @@ window.___E_mod(function (E, $) {
 
 		self.config = {
 			
-			// 菜单栏中的 color 按钮点击时的颜色值
+			// 菜单栏中的 color 按钮点击时的颜色值（即css中的颜色值）
 			menuColorValue: 'red',
 
 			// 菜单栏中的 quote 按钮点击时的样式
@@ -185,7 +210,10 @@ window.___E_mod(function (E, $) {
 			uploadImgUrl: '/upload',
 
 			// 测试地址（在测试地址，编辑器会主动输出一些console.log信息）
-			testHostname: 'localhost'
+			testHostname: 'localhost',
+
+			// 通过 openBtn 打开菜单之后，N次不执行command就自动隐藏
+			tapNumForHideMenu: 3
 		};
 		
 	};
@@ -225,25 +253,25 @@ window.___E_mod(function (E, $) {
 		var self = this;
 
 		// ------------- menus container  
-		var $menuContainer = $('<div class="wangEditor-mobile-menu-container"></div>');
+		var $menuContainer = $('<div class="wangEditor-mobile-menu-container" contentEditable="false"></div>');
 		var $menuItemContainer = $('<div class="item-container"></div>');
 		var $menuContainerTip = $('<div class="tip"></div>');  // 三角形
-		var $menuCloseContainer = $('<div class="close"></div>');
-		var $menuClose = $('<a href="#"></a>');
+		// var $menuCloseContainer = $('<div class="close"></div>');
+		// var $menuClose = $('<a href="#"></a>');
 
 		// 增加小三角 tip
 		$menuContainer.append($menuContainerTip);
 
 		// 增加关闭按钮
-		$menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
-		$menuCloseContainer.append($menuClose);
-		$menuContainer.append($menuItemContainer);
+		// $menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
+		// $menuCloseContainer.append($menuClose);
+		// $menuContainer.append($menuCloseContainer);
 
 		// 菜单项的容器
-		$menuContainer.append($menuCloseContainer);
+		$menuContainer.append($menuItemContainer);
 
 		// -------- menus container 打开按钮
-		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"></div>');
+		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"  contentEditable="false"></div>');
 		var $menuContainerOpenBtnItemContaier = $('<div class="item-container"> <div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div> </div>');
 		$menuContainerOpenBtn.append($menuContainerOpenBtnItemContaier);
 		$menuContainerOpenBtn.append($menuContainerTip.clone());
@@ -252,7 +280,7 @@ window.___E_mod(function (E, $) {
 		self.$menuContainer = $menuContainer;
 		self.$menuItemContainer = $menuItemContainer;
 		self.$menuContainerOpenBtn = $menuContainerOpenBtn;
-		self.$menuClose = $menuClose;
+		// self.$menuClose = $menuClose;
 
 		// ------------- menus 数据集合 ------------- 
 		self.menus = {};		
@@ -288,7 +316,7 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'bold') === false) {
 						return;
 					}
 
@@ -334,15 +362,15 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'head') === false) {
 						return;
 					}
 
 					// 执行命令
 					if (menuData.selected) {
-						self.command('formatblock', false, 'p');
+						self.command('formatblock', false, 'p', e);
 					} else {
-						self.command('formatblock', false, 'h3');
+						self.command('formatblock', false, 'h3', e);
 					}
 				});
 			},
@@ -388,7 +416,7 @@ window.___E_mod(function (E, $) {
 				var $trigger = menuDate.$trigger;
 
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'color') === false) {
 						return;
 					}
 
@@ -440,25 +468,38 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'quote') === false) {
 						return;
 					}
 
 					// 执行命令
 					var $focusElem = self.$focusElem;
+					var $quoteElem;
 					var text;
 					var commandFn;
 					if (menuData.selected) {
 						// 此时已经是 quote 状态，此时点击，应该恢复为普通文字
 						
+						// 获取当前的 quote 元素
+						if ($focusElem.get(0).nodeName === 'BLOCKQUOTE') {
+							$quoteElem = $focusElem;
+						} else {
+							$quoteElem = $focusElem.closest('blockquote');
+						}
+
+						if ($quoteElem.length === 0) {
+							// 没有找到 blockquote 元素
+							return;
+						}
+
 						// 获取文本
-						text = $focusElem.text();
+						text = $quoteElem.text();
 
 						// 定义一个自定义的命令事件
 						commandFn = function () {
 							var $p = $('<p>' + text + '</p>');
-							$focusElem.after($p);
-							$focusElem.remove();
+							$quoteElem.after($p);
+							$quoteElem.remove();
 						};
 
 						// 执行盖自定义事件
@@ -527,7 +568,7 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'list') === false) {
 						return;
 					}
 
@@ -574,7 +615,7 @@ window.___E_mod(function (E, $) {
 				var tapTime = Date.now();
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'check') === false) {
 						return;
 					}
 
@@ -671,7 +712,7 @@ window.___E_mod(function (E, $) {
 
 				// 绑定表情图标的事件
 				$modal.on('singleTap', '.command-link', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy command-link') === false) {
 						return;
 					}
 
@@ -728,7 +769,7 @@ window.___E_mod(function (E, $) {
 				// one绑定的方法只执行一次
 				// 用于渲染 modal 元素并显示
 				$trigger.one('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy one') === false) {
 						return;
 					}
 
@@ -739,7 +780,7 @@ window.___E_mod(function (E, $) {
 				// on 绑定的方法每次都执行
 				// 用于每次显示和隐藏modal
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'happy on') === false) {
 						return;
 					}
 
@@ -874,7 +915,7 @@ window.___E_mod(function (E, $) {
 
 				// 点击菜单，触发 input 事件
 				$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'img') === false) {
 						return;
 					}
 
@@ -965,11 +1006,13 @@ window.___E_mod(function (E, $) {
 		
 		// 变量记录菜单容器（或者openbtn）的显示与隐藏
 		self.menuDisplayShow = false;
-		$body.append($menuContainer);
+		// $body.append($menuContainer);
+		$txt.prepend($menuContainer);
 
 		// 变量记录当前显示的是菜单还是openbtn
 		self.showMenu = false;
-		$body.append($menuContainerOpenBtn);
+		// $body.append($menuContainerOpenBtn);
+		$txt.prepend($menuContainerOpenBtn);
 	};
 
 });
@@ -1047,7 +1090,7 @@ window.___E_mod(function (E, $) {
 			self.isFocus = true;
 		});
 		$txt.on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
+			if (self.checkTapTime(e, '$txt') === false) {
 				return;
 			}
 
@@ -1071,6 +1114,9 @@ window.___E_mod(function (E, $) {
 				self.hideMenuContainer();
 				return;
 			}
+
+			// 计算点击次数（N次不command即隐藏菜单为 openBtn 形式）
+			self.setTapNumForHideMenu('tap');
 
 			// 根据点击的位置，对菜单栏进行定位
 			self.setMenuContainerPosition();
@@ -1188,18 +1234,20 @@ window.___E_mod(function (E, $) {
 		});
 
 		// 绑定 menucontainer 右上角的关闭按钮事件
-		$menuClose.on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
-				return;
-			}
+		if ($menuClose != null) {
+			$menuClose.on('singleTap', function (e) {
+				if (self.checkTapTime(e, '$menuClose') === false) {
+					return;
+				}
 
-			// 显示菜单（下次显示openBtn）
-			self.hideMenuByOpenBtn();
+				// 显示菜单（下次显示openBtn）
+				self.hideMenuByOpenBtn();
 
-			// 阻止冒泡
-			e.preventDefault();
-			e.stopPropagation();
-		});
+				// 阻止冒泡
+				e.preventDefault();
+				e.stopPropagation();
+			});
+		}
 	};
 
 	// ----------------- 绑定 menucontainer openbtn 的事件
@@ -1210,7 +1258,7 @@ window.___E_mod(function (E, $) {
 
 		// 点击 openbtn 显示菜单
 		$menuContainerOpenBtn.find('a').on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
+			if (self.checkTapTime(e, '$menuContainerOpenBtn') === false) {
 				return;
 			}
 
@@ -1275,6 +1323,9 @@ window.___E_mod(function (E, $) {
 		var $txtClone = $txt.clone();
 		var $focusElem1 = $txtClone.find('.focus-elem');
 
+		// 如果 menuContainer 和 menuContainerOpenBtn 都在编辑区域内
+		// 则保存源码时要注意踢出这两个！！
+
 		// 将当前的 $focusElem 清除样式
 		$focusElem1.removeClass('focus-elem');
 
@@ -1296,6 +1347,32 @@ window.___E_mod(function (E, $) {
 
 		if ($children.last().html() !== '<br>') {
 			$txt.append($('<p><br></p>'));
+		}
+	};
+
+	// 记录编辑器的点击次数
+	E.fn.setTapNumForHideMenu = function (type) {
+		// type: 'tap' / 'command'
+		
+		var self = this;
+		var currentNum = self.tapNumForHideMenu;
+		var configNum = self.config.tapNumForHideMenu;
+
+		if (currentNum == null) {
+			return;
+		}
+		// self.tapNumForHideMenu 将再 openBtn 显示菜单时，赋值为 0
+		
+		if (type === 'tap') {
+			self.tapNumForHideMenu = currentNum + 1;
+
+			if (currentNum >= configNum) {
+				// 超出了界限，就执行 openBtn 隐藏菜单，取消计数
+				// 此时将 self.tapNumForHideMenu 的值赋值为 null
+				self.hideMenuByOpenBtn();
+			}
+		} else if (type === 'command') {
+			self.tapNumForHideMenu = currentNum - 1;
 		}
 	};
 
@@ -1356,7 +1433,7 @@ window.___E_mod(function (E, $) {
 		}
 
 		// 其他样式的结果值
-		var left = txtLeft + 3;
+		var left = txtLeft + 1;
 		var marginTop = 20;
 		var style = {
 			'top': top + 'px',
@@ -1437,6 +1514,9 @@ window.___E_mod(function (E, $) {
 
 		$menuContainerOpenBtn.hide();
 		$menuContainerOpenBtn.css('opacity', '0');
+
+		// 开始点击次数的记录
+		self.tapNumForHideMenu = 0;
 	};
 
 	// -------------------通过openbtn隐藏菜单-------------------
@@ -1450,6 +1530,9 @@ window.___E_mod(function (E, $) {
 		
 		// 直接调用隐藏menucontainer的方法即可
 		self.hideMenuContainer();
+
+		// 取消点击次数的记录
+		self.tapNumForHideMenu = null;
 	};
 });
 // menus api
@@ -1540,6 +1623,9 @@ window.___E_mod(function (E, $) {
 
 		// 隐藏菜单栏
 		self.hideMenuContainer();
+
+		// 计算点击次数（N次不command即隐藏菜单为 openBtn 形式）
+		self.setTapNumForHideMenu('command');
 	};
 });
 // range selection 的相关操作

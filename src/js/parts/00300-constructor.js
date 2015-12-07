@@ -14,17 +14,42 @@
 		var $textarea = $('#' + textareaId);
 		self.$textarea = $textarea;
 
-		// tapTime将记录每一个tap事件的时间，防止短时间内重复tap
-		self.tapTime = Date.now();
-		self.checkTapTime = function () {
-			// 如果当前时间和上一次tapTime相差 **ms 之内，则忽略
-			// 否则就继续并更新tapTime
-			if (Date.now() - self.tapTime < 100) {
-				return false;
+		// 记录每一个tap事件的时间，防止短时间内重复tap
+		self.checkTapTime = function (e, info) {
+			//E.log('checkTapTime', info);
+
+			var currentElem;
+			var $currentElem;
+			var result = true;
+
+			if (e) {
+				// 传入 event 对象，则为每个event对象分配事件
+				currentElem = e.currentTarget || e.target;
+				$currentElem = $(currentElem);
+			} else {
+				// 未传入，则都用body
+				$currentElem = self.$body;
 			}
 
-			self.tapTime = Date.now();
-			return true;
+			if ($currentElem.data('tapTime') == null) {
+				// 第一次，直接通过
+				$currentElem.data('tapTime', Date.now().toString());
+				result = true;
+			} else {
+				if (Date.now() - parseInt($currentElem.data('tapTime')) < 100) {
+					// 如果当前时间和上一次tapTime相差 **ms 之内，
+					// 则视为无效，并阻止冒泡和默认行为
+					e.preventDefault();
+					e.stopPropagation();
+					result = false;
+				} else {
+					// 否则就继续并更新tapTime
+					$currentElem.data('tapTime', Date.now().toString());
+					result = true;
+				}
+			}
+
+			return result;
 		};
 
 		// ---------接下来即初始化各个组件配置----------

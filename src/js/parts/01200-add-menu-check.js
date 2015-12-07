@@ -19,7 +19,7 @@ window.___E_mod(function (E, $) {
 				var tapTime = Date.now();
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'check') === false) {
 						return;
 					}
 

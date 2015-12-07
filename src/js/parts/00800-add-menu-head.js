@@ -18,15 +18,15 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'head') === false) {
 						return;
 					}
 
 					// 执行命令
 					if (menuData.selected) {
-						self.command('formatblock', false, 'p');
+						self.command('formatblock', false, 'p', e);
 					} else {
-						self.command('formatblock', false, 'h3');
+						self.command('formatblock', false, 'h3', e);
 					}
 				});
 			},

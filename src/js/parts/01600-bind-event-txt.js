@@ -39,7 +39,7 @@ window.___E_mod(function (E, $) {
 			self.isFocus = true;
 		});
 		$txt.on('singleTap', function (e) {
-			if (self.checkTapTime() === false) {
+			if (self.checkTapTime(e, '$txt') === false) {
 				return;
 			}
 
@@ -63,6 +63,9 @@ window.___E_mod(function (E, $) {
 				self.hideMenuContainer();
 				return;
 			}
+
+			// 计算点击次数（N次不command即隐藏菜单为 openBtn 形式）
+			self.setTapNumForHideMenu('tap');
 
 			// 根据点击的位置，对菜单栏进行定位
 			self.setMenuContainerPosition();

@@ -19,7 +19,7 @@ window.___E_mod(function (E, $) {
 			bindEvent: function (editor) {
 				var menuData = this;
 				menuData.$trigger.on('singleTap', function (e) {
-					if (self.checkTapTime() === false) {
+					if (self.checkTapTime(e, 'bold') === false) {
 						return;
 					}
 
