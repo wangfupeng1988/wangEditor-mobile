@@ -73,7 +73,7 @@
   border-radius: 8px;
   box-shadow: 2px 2px 5px #999;
   transition: opacity .3s;
-  width: 95%;
+  max-width: 95%;
   /*.close {
 		position: absolute;
 		z-index: 10000;
@@ -165,7 +165,7 @@
 .wangEditor-mobile-modal {
   box-sizing: border-box;
   display: none;
-  position: absolute;
+  position: fixed;
   width: 80%;
   background-color: #fff;
   border-radius: 5px;

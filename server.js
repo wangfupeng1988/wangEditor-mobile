@@ -35,12 +35,18 @@ http.createServer(function (req, res) {
 			var file = files[inputfilename];
 			// formidable 会将上传的文件存储为一个临时文件，现在获取这个文件的目录
 			var tempfilepath = file.path;
+			// 获取文件类型
+			var type = file.type;
 
 			// 获取文件名，并根据文件名获取扩展名
 			var filename = file.name;
 			var extname = filename.lastIndexOf('.') >= 0
 							? filename.slice(filename.lastIndexOf('.') - filename.length)
 							: '';
+			// 文件名没有扩展名时候，则从文件类型中取扩展名
+			if (extname === '' && type.indexOf('/') >= 0) {
+				extname = '.' + type.split('/')[1];
+			}
 			// 将文件名重新赋值为一个随机数（避免文件重名）
 			filename = Math.random().toString().slice(2) + extname;
 
@@ -55,7 +61,7 @@ http.createServer(function (req, res) {
 				if (err) {
 					// 发生错误
 					console.log('fs.rename err');
-					result = 'error';
+					result = 'error|save error';
 				} else {
 					// 保存成功
 					console.log('fs.rename done');
@@ -81,8 +87,12 @@ http.createServer(function (req, res) {
 				res.end('404 NOT FOUND...');
 				return;
 			}
-
-			res.writeHead('200');
+			if (filepath.slice(filepath.lastIndexOf('.') - filepath.length) === '.css') {
+				// 兼容IE
+				res.writeHead('200', {'Content-type': 'text/css'});
+			} else {
+				res.writeHead('200');
+			}
 			console.log('response file success: ' + filepath);
 			res.end(file);
 		});

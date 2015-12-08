@@ -58,6 +58,12 @@ window.___E_mod(function (E, $) {
 				return;
 			}
 
+			if ($target.get(0).nodeName === 'IMG') {
+				// 点击图片时，隐藏菜单，返回
+				self.hideMenuContainer();
+				return;
+			}
+
 			if ($target.hasClass('wangEditor-mobile-txt')) {
 				// 如果当前选中的编辑区域，则隐藏菜单，返回
 				self.hideMenuContainer();

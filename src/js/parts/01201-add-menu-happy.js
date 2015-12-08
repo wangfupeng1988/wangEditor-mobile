@@ -11,8 +11,7 @@ window.___E_mod(function (E, $) {
 		// 提醒，不要使用编辑器自带的表情
 		if (happyUrlArr.length > 0) {
 			if (happyUrlArr[0].indexOf('http://wangeditor.github.io/expressions') === 0) {
-				E.warn('正在使用wangEdior提供的免费表情图标，它们将从 github 下载，速度很慢！！！');
-				E.warn('建议将表情图标重新配置，请参见文档说明');
+				E.warn('正在使用wangEdior提供的免费表情图标，它们将从 github 下载，速度很慢！！！建议将表情图标重新配置，请参见文档说明');
 			}
 		}
 
