@@ -24,6 +24,15 @@ body {
 		background-color: #f1f1f1;
 	}
 
+	/*
+		注释: 一个 list 被 focus 之后，会因为增加了 .focus-elem 而有一个背景色
+		     此时执行取消 list 时，取消之后的文字也会带着这个背景色（这是不正确的）
+		     因此，此处设定，在 list focus 时，不要加背景色。
+	*/
+	ul .focus-elem {
+		background: none;
+	}
+
 	ul {
 		display: block;
 		list-style-type: disc;

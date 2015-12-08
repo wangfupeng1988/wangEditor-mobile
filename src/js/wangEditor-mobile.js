@@ -579,8 +579,9 @@ window.___E_mod(function (E, $) {
 						return;
 					}
 
-					// 执行命令
+					// 当前不是 list 状态，直接执行
 					self.command('InsertUnorderedList', false, undefined, e);
+					
 				});
 			},
 
@@ -1269,41 +1270,24 @@ window.___E_mod(function (E, $) {
 			// 记录编辑区域已经 blur
 			self.isFocus = false;
 
-			// -----------兼容 android begin-----------
-			// 在部分安卓浏览器中，点击menucontainer相关的按钮
-			// 会先触发 blur 然后再触发自己的tap
-			// 这里做一步判断
-
-			var focusTxtFn = self.focusTxt;
-
 			var explicitOriginalTarget = e.explicitOriginalTarget;
 			if (menuContainer.contains(explicitOriginalTarget) || menuContainerOpenBtn.contains(explicitOriginalTarget)) {
-				// firefox 中，
-				// e.explicitOriginalTarget 包含再菜单容器中，说明
-				// 是由菜单容器的按钮点击触发的该事件
-				setTimeout(focusTxtFn.call(self), 300);
+				// firefox 中，点击菜单会导致 $txt blur
+				// e.explicitOriginalTarget 有值，并且包含在菜单容器中，证明是 ff 点击菜单所致的 blur
+				
 				e.preventDefault();
 				return;
+
+			} else {
+				// 其他浏览器，点击菜单，都不会出现 blur 的情况
+				// 这是正常情况下的 blur
+
+				// 存储源码代码
+				self.saveSourceCode();
+
+				// 隐藏菜单 fn
+				self.hideMenuContainer();
 			}
-
-			var relatedTarget = e.relatedTarget;
-			if (relatedTarget != null) {
-				// chrome中
-				// e.relatedTarget != null 说明是
-				// 点击menucontainer相关的按钮触发的，阻止并返回
-				setTimeout(focusTxtFn.call(self), 300);
-				e.preventDefault();
-				return;
-			}
-
-			// -----------兼容 android begin-----------
-
-			// 存储源码代码
-			self.saveSourceCode();
-
-			// 隐藏菜单 fn
-			self.hideMenuContainer();
-			
 		});
 
 		// 阻止 click 事件，防止 tap 点透
