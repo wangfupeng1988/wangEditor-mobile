@@ -39,7 +39,7 @@ window.___E_mod(function (E, $) {
 		var $menuContainer = self.$menuContainer;
 
 		// 点击 openbtn 显示菜单
-		$menuContainerOpenBtn.find('a').on('singleTap', function (e) {
+		$menuContainerOpenBtn.on('singleTap', function (e) {
 			if (self.checkTapTime(e, '$menuContainerOpenBtn') === false) {
 				return;
 			}

@@ -3,6 +3,7 @@ window.___E_mod(function (E, $) {
 	E.fn.addMenuImg = function (menuId) {
 		var self = this;
 		var $body = self.$body;
+		var $txt = self.$txt;
 		var menus = self.menus;
 		var config = self.config;
 		var uploadImgUrl = config.uploadImgUrl || '';
@@ -27,7 +28,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-picture"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-picture"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"</div>'),
 
@@ -82,7 +83,10 @@ window.___E_mod(function (E, $) {
 
 				// input 有文件选中时，显示预览图，提交 form
 				$inputFlie.on('change', function (e) {
-					var files = $inputFlie[0].files;
+					var files = $inputFlie[0].files || [];
+					if (files.length === 0) {
+						return;
+					}
 					var file = files[0];
 					var fileType = file.type || '';
 					var reader = new FileReader();
@@ -105,8 +109,8 @@ window.___E_mod(function (E, $) {
 
 						// ---------- 显示预览 ----------
 						prevImgSrc =  window.URL.createObjectURL(file);
-						// 生成预览图片，设置半透明
-						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:.2; max-width:100%;"/>');
+						// 生成预览图片，设置半透明（半透明先暂时不要）
+						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:1; max-width:100%;"/>');
 						log('生成预览图片，src是：' + prevImgSrc);
 
 						// ---------- 上传到服务器 ----------
@@ -154,7 +158,7 @@ window.___E_mod(function (E, $) {
 			            		log('很遗憾，后台返回error，错误信息为：' + erroInfo);
 			            		
 			            		// 提示错误
-			            		alert('错误：\n' + erroInfo);
+			            		alert('上传图片错误: \n' + erroInfo);
 
 			            		// 移除预览图片
 			            		$prevImg.remove();
@@ -170,7 +174,7 @@ window.___E_mod(function (E, $) {
 			            		loadImg = document.createElement('img');
 			            		loadImg.src = resultSrc;
 			            		loadImg.onload = function () {
-			            			log('现在完成，正式呈现在编辑区域');
+			            			log('下载完成，正式呈现在编辑区域');
 			            			$prevImg.attr('src', resultSrc);
 			            			$prevImg.css({'opacity': '1'});
 			            		};
@@ -190,6 +194,7 @@ window.___E_mod(function (E, $) {
 
 				// 点击菜单，触发 input 事件
 				$trigger.on('singleTap', function (e) {
+					// singleTap需要验证
 					if (self.checkTapTime(e, 'img') === false) {
 						return;
 					}

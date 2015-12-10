@@ -18,9 +18,15 @@
 		self.checkTapTime = function (e, info) {
 			//E.log('checkTapTime', info);
 
+			var type = e.type.toLowerCase();
 			var currentElem;
 			var $currentElem;
 			var result = true;
+
+			if (type.indexOf('tap') < 0) {
+				// 只针对 tap，其他的不管
+				return result;
+			}
 
 			if (e) {
 				// 传入 event 对象，则为每个event对象分配事件

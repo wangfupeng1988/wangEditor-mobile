@@ -11,7 +11,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-bold"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-bold"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 

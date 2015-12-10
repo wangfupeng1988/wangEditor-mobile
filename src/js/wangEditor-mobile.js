@@ -69,9 +69,15 @@
 		self.checkTapTime = function (e, info) {
 			//E.log('checkTapTime', info);
 
+			var type = e.type.toLowerCase();
 			var currentElem;
 			var $currentElem;
 			var result = true;
+
+			if (type.indexOf('tap') < 0) {
+				// 只针对 tap，其他的不管
+				return result;
+			}
 
 			if (e) {
 				// 传入 event 对象，则为每个event对象分配事件
@@ -144,6 +150,11 @@
 	window.___E = E;
 
 })(window, window.Zepto);
+// 自定义alert
+window.___E_mod(function (E, $) {
+
+
+});
 // 初始化静态配置文件
 window.___E_mod(function (E, $) {
 
@@ -262,12 +273,14 @@ window.___E_mod(function (E, $) {
 		// ------------- menus container  
 		var $menuContainer = $('<div class="wangEditor-mobile-menu-container" contentEditable="false"></div>');
 		var $menuItemContainer = $('<div class="item-container"></div>');
-		var $menuContainerTip = $('<div class="tip"></div>');  // 三角形
+		var $menuContainerTip = $('<div class="tip tip-top"></div>');  // 三角形
+		var $menuContainerTip1 = $('<div class="tip tip-bottom"></div>');  // 三角形
 		// var $menuCloseContainer = $('<div class="close"></div>');
 		// var $menuClose = $('<a href="#"></a>');
 
 		// 增加小三角 tip
-		$menuContainer.append($menuContainerTip);
+		$menuContainer.append($menuContainerTip)
+					  .append($menuContainerTip1);
 
 		// 增加关闭按钮
 		// $menuClose.append($('<i class="icon-wangEditor-m-close"></i>'));
@@ -279,9 +292,10 @@ window.___E_mod(function (E, $) {
 
 		// -------- menus container 打开按钮
 		var $menuContainerOpenBtn = $('<div class="wangEditor-mobile-menu-container-open-btn"  contentEditable="false"></div>');
-		var $menuContainerOpenBtnItemContaier = $('<div class="item-container"> <div class="item"><a href="#"><i class="icon-wangEditor-m-ellipsis-h"></i></a></div> </div>');
+		var $menuContainerOpenBtnItemContaier = $('<div class="item-container"> <div class="item"><div><i class="icon-wangEditor-m-ellipsis-h"></i></div></div> </div>');
 		$menuContainerOpenBtn.append($menuContainerOpenBtnItemContaier);
-		$menuContainerOpenBtn.append($menuContainerTip.clone());
+		$menuContainerOpenBtn.append($menuContainerTip.clone())
+							 .append($menuContainerTip1.clone());
 
 		// 添加到数据对象
 		self.$menuContainer = $menuContainer;
@@ -315,7 +329,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-bold"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-bold"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -361,7 +375,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-header"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-header"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -413,7 +427,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-brush"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-brush"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -467,7 +481,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-quote-left"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-quote-left"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -567,7 +581,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-list-ul"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-list-ul"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -614,7 +628,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-checkbox-checked"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-checkbox-checked"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"></div>'),
 
@@ -688,7 +702,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-happy"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-happy"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"</div>'),
 
@@ -699,7 +713,7 @@ window.___E_mod(function (E, $) {
 			renderModal: function () {
 				var menuData = this;
 				var $modal = menuData.$modal;
-				var itemTpl = '<a href="#" class="command-link" commandValue="#{imgUrl}"><img src="#{imgUrl}"/></a>';
+				var itemTpl = '<span class="command-link" commandValue="#{imgUrl}"><img src="#{imgUrl}"/></span>';
 				var contentHtmlArr = [];
 
 				// 拼接数据
@@ -718,6 +732,10 @@ window.___E_mod(function (E, $) {
 				$modal.css('margin-left', (0 - width)/2);
 
 				// 绑定表情图标的事件
+				$modal.on('click', '.command-link', function (e) {
+					// 屏蔽click事件的默认行为
+					e.preventDefault();
+				});
 				$modal.on('singleTap', '.command-link', function (e) {
 					if (self.checkTapTime(e, 'happy command-link') === false) {
 						return;
@@ -737,9 +755,16 @@ window.___E_mod(function (E, $) {
 			// 显示 $modal
 			showModal: function () {
 				var menuData = this;
+				var $modal = menuData.$modal;
+				var scrollTop = $body.get(0).scrollTop;
 
 				// 显示 modal
-				menuData.$modal.show();
+				$modal.show();
+
+				// 确定 modal 位置
+				$modal.css({
+					'margin-top': (scrollTop + 50) + 'px'
+				});
 
 				// 点击编辑区域隐藏modal
 				var hideModalFn = function (e) {
@@ -809,6 +834,7 @@ window.___E_mod(function (E, $) {
 	E.fn.addMenuImg = function (menuId) {
 		var self = this;
 		var $body = self.$body;
+		var $txt = self.$txt;
 		var menus = self.menus;
 		var config = self.config;
 		var uploadImgUrl = config.uploadImgUrl || '';
@@ -833,7 +859,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-picture"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-picture"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"</div>'),
 
@@ -888,7 +914,10 @@ window.___E_mod(function (E, $) {
 
 				// input 有文件选中时，显示预览图，提交 form
 				$inputFlie.on('change', function (e) {
-					var files = $inputFlie[0].files;
+					var files = $inputFlie[0].files || [];
+					if (files.length === 0) {
+						return;
+					}
 					var file = files[0];
 					var fileType = file.type || '';
 					var reader = new FileReader();
@@ -911,8 +940,8 @@ window.___E_mod(function (E, $) {
 
 						// ---------- 显示预览 ----------
 						prevImgSrc =  window.URL.createObjectURL(file);
-						// 生成预览图片，设置半透明
-						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:.2; max-width:100%;"/>');
+						// 生成预览图片，设置半透明（半透明先暂时不要）
+						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:1; max-width:100%;"/>');
 						log('生成预览图片，src是：' + prevImgSrc);
 
 						// ---------- 上传到服务器 ----------
@@ -960,7 +989,7 @@ window.___E_mod(function (E, $) {
 			            		log('很遗憾，后台返回error，错误信息为：' + erroInfo);
 			            		
 			            		// 提示错误
-			            		alert('错误：\n' + erroInfo);
+			            		alert('上传图片错误: \n' + erroInfo);
 
 			            		// 移除预览图片
 			            		$prevImg.remove();
@@ -976,7 +1005,7 @@ window.___E_mod(function (E, $) {
 			            		loadImg = document.createElement('img');
 			            		loadImg.src = resultSrc;
 			            		loadImg.onload = function () {
-			            			log('现在完成，正式呈现在编辑区域');
+			            			log('下载完成，正式呈现在编辑区域');
 			            			$prevImg.attr('src', resultSrc);
 			            			$prevImg.css({'opacity': '1'});
 			            		};
@@ -996,6 +1025,7 @@ window.___E_mod(function (E, $) {
 
 				// 点击菜单，触发 input 事件
 				$trigger.on('singleTap', function (e) {
+					// singleTap需要验证
 					if (self.checkTapTime(e, 'img') === false) {
 						return;
 					}
@@ -1290,11 +1320,11 @@ window.___E_mod(function (E, $) {
 			}
 		});
 
-		// 阻止 click 事件，防止 tap 点透
-		$txt.on('click', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		});
+		// // 阻止 click 事件，防止 tap 点透
+		// $txt.on('click', function (e) {
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// });
 	};
 
 });
@@ -1339,7 +1369,7 @@ window.___E_mod(function (E, $) {
 		var $menuContainer = self.$menuContainer;
 
 		// 点击 openbtn 显示菜单
-		$menuContainerOpenBtn.find('a').on('singleTap', function (e) {
+		$menuContainerOpenBtn.on('singleTap', function (e) {
 			if (self.checkTapTime(e, '$menuContainerOpenBtn') === false) {
 				return;
 			}
@@ -1462,73 +1492,133 @@ window.___E_mod(function (E, $) {
 // menucontainer api
 window.___E_mod(function (E, $) {
 
-	// -------------------显示菜单-------------------
+	var positionFirst = true;  // 第一次计算位置
+	var firstTop = 0;
+	// -------------------计算菜单的位置，显示菜单-------------------
 	E.fn.setMenuContainerPosition = function () {
 		var self = this;
+
+		// 目标元素
 		var $targetElem = self.eventTarget();
-		
+		// 编辑区域
+		var $txt = self.$txt;
+		// 菜单
+		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+
 		// 获取tap事件中target元素的位置和尺寸
 		var targetElemOffset = $targetElem.offset();
 		var targetElemTop = targetElemOffset.top;
 		var targetElemHeight = targetElemOffset.height;
 
-		// 获取目标元素最下方的位置
-		var y = targetElemTop + targetElemHeight;
-
 		// 获取编辑区域 $txt 的位置和尺寸
-		var $txt = self.$txt;
+		var scrollTop = $txt.get(0).scrollTop;
 		var txtOffset = $txt.offset();
 		var txtTop = txtOffset.top;
-		var txtLeft = txtOffset.left;
 		var txtHeight = txtOffset.height;
+		var txtLeft = txtOffset.left;
 
-		// 如果超出了 $txt 的范围，则限制一下 y 的大小，限制在 $txt 最底部
-		if (y > txtTop + txtHeight) {
-			y = txtTop + txtHeight - 10;
-		}
-		
+		// 获取目标元素下方的位置
+		var targetElemBottom = targetElemTop + targetElemHeight;
+		// 获取 $txt 下方的位置
+		var txtBottom = txtTop + txtHeight;
 
-		// 获取编辑区域 $txt 的最后一个子元素（如果没有就强行加一个空行）
-		var $children = $txt.children();
-		var $lastChild;
-		if ($children.length === 0) {
-			$lastChild = $('<p><br></p>');
-			$txt.append($lastChild);
+		// 用于存储最后的结果
+		var top = 0;
+		var style = {};
+
+		if (txtBottom - targetElemBottom >= 60) {
+			// 如果目标元素距离编辑区域下方的距离大于60，菜单显示在下方
+
+			// 显示上方的 tip
+			self.showTipTop();
+
+			// 设置top
+			top = targetElemBottom - txtTop + scrollTop;
+			// 下移 10px
+			top  = top + 10;
+
+
 		} else {
-			$lastChild = $children.last();
-		}
-		// 获取最后一个子元素的尺寸和位置
-		var lastChildOffset = $lastChild.offset();
-		var lastChildTop = lastChildOffset.top;
-		var lastChildHeight = lastChildOffset.height;
+			// 如果目标元素距离编辑区域下方的距离小于60，菜单显示在上方
 
-		// 菜单容器
-		var $menuContainer = self.$menuContainer;
-		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+			// 显示下方的 tip
+			self.showTipBottom();
 
-		// top 先默认为手指点击的y值
-		var top = y;
-		if (top > lastChildTop + lastChildHeight) {
-			// 如果手指点击的地方在 $txt 最后一个子元素的下方，
-			// 则将 top 值定义为 $txt 最后一个子元素的最底部
-			top = lastChildTop + lastChildHeight;
+			// 设置top
+			top = targetElemTop - txtTop + scrollTop;
+			// 上移 50px
+			top = top - 50;
 		}
 
-		// 其他样式的结果值
-		var left = txtLeft + 1;
-		var marginTop = 20;
-		var style = {
-			'top': top + 'px',
-			'left': left + 'px',
-			'margin-top': marginTop + 'px'
-		};
+		// 如果 top 小于 0，则修改为 0（小于0说明隐藏在上方了）
+		if (top < scrollTop) {
+			top = scrollTop;
+		}
 
-		// 定位
+		if (positionFirst) {
+			// 第一次计算位置，直接设置样式
+			style = {
+				top: top + 'px',
+				left: '3px'
+			};
+
+			// 将当前的top存储下来
+			firstTop = top;
+
+			positionFirst = false;
+		} else {
+			// 之后计算位置，通过margin解决（有动画效果）
+			style = {
+				'margin-top': (top - firstTop) + 'px'
+			};
+		}
+
+		// 设置菜单的样式，定位
 		$menuContainer.css(style); 
 		$menuContainerOpenBtn.css(style);
 
 		// 显示menucontainer
 		self.showMenuContainer();
+	};
+
+
+	var menuContainerTip = 'top';  // 记录tip状态。默认为 top
+	// -------------------显示上面的tip三角-------------------
+	E.fn.showTipTop = function () {
+		if (menuContainerTip === 'top') {
+			return;
+		}
+
+		var self = this;
+		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+
+		$menuContainer.removeClass('wangEditor-mobile-menu-container1')
+					  .addClass('wangEditor-mobile-menu-container');
+		$menuContainerOpenBtn.removeClass('wangEditor-mobile-menu-container-open-btn1')
+							 .addClass('wangEditor-mobile-menu-container-open-btn');
+		
+		// 记录状态
+		menuContainerTip = 'top';
+	};
+	// -------------------显示下面的tip三角-------------------
+	E.fn.showTipBottom = function () {
+		if (menuContainerTip === 'bottom') {
+			return;
+		}
+		
+		var self = this;
+		var $menuContainer = self.$menuContainer;
+		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
+
+		$menuContainer.removeClass('wangEditor-mobile-menu-container')
+					  .addClass('wangEditor-mobile-menu-container1');
+		$menuContainerOpenBtn.removeClass('wangEditor-mobile-menu-container-open-btn')
+							 .addClass('wangEditor-mobile-menu-container-open-btn1');
+		
+		// 记录状态
+		menuContainerTip = 'bottom';
 	};
 
 	// -------------------显示菜单-------------------

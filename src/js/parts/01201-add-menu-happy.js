@@ -20,7 +20,7 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<a href="#"><i class="icon-wangEditor-m-happy"></i></a>'),
+			$trigger: $('<div><i class="icon-wangEditor-m-happy"></i></div>'),
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"</div>'),
 
@@ -31,7 +31,7 @@ window.___E_mod(function (E, $) {
 			renderModal: function () {
 				var menuData = this;
 				var $modal = menuData.$modal;
-				var itemTpl = '<a href="#" class="command-link" commandValue="#{imgUrl}"><img src="#{imgUrl}"/></a>';
+				var itemTpl = '<span class="command-link" commandValue="#{imgUrl}"><img src="#{imgUrl}"/></span>';
 				var contentHtmlArr = [];
 
 				// 拼接数据
@@ -50,6 +50,10 @@ window.___E_mod(function (E, $) {
 				$modal.css('margin-left', (0 - width)/2);
 
 				// 绑定表情图标的事件
+				$modal.on('click', '.command-link', function (e) {
+					// 屏蔽click事件的默认行为
+					e.preventDefault();
+				});
 				$modal.on('singleTap', '.command-link', function (e) {
 					if (self.checkTapTime(e, 'happy command-link') === false) {
 						return;
@@ -69,9 +73,16 @@ window.___E_mod(function (E, $) {
 			// 显示 $modal
 			showModal: function () {
 				var menuData = this;
+				var $modal = menuData.$modal;
+				var scrollTop = $body.get(0).scrollTop;
 
 				// 显示 modal
-				menuData.$modal.show();
+				$modal.show();
+
+				// 确定 modal 位置
+				$modal.css({
+					'margin-top': (scrollTop + 50) + 'px'
+				});
 
 				// 点击编辑区域隐藏modal
 				var hideModalFn = function (e) {

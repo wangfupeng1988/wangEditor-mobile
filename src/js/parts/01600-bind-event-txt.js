@@ -146,11 +146,11 @@ window.___E_mod(function (E, $) {
 			}
 		});
 
-		// 阻止 click 事件，防止 tap 点透
-		$txt.on('click', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		});
+		// // 阻止 click 事件，防止 tap 点透
+		// $txt.on('click', function (e) {
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// });
 	};
 
 });

@@ -1,5 +1,7 @@
 .wangEditor-mobile-menu-container-open-btn,
-.wangEditor-mobile-menu-container {
+.wangEditor-mobile-menu-container,
+.wangEditor-mobile-menu-container-open-btn1,
+.wangEditor-mobile-menu-container1 {
 
 	// 引用通用样式
 	@import 'box-flex.less';
@@ -15,18 +17,40 @@
 	transition: opacity .3s;
 	max-width: 95%;
 
+	// margin动画
+	-webkit-transition: margin .15s;;
+	-o-transition: margin .15s;;
+	transition: margin .15s;;
+
+	* {
+		outline: none;
+	}
+	*:focus {
+		outline: none;
+	}
+
 	.tip {
 		position: absolute;
 		width: 0;
 		height: 0;
 		border: 10px solid #111;   //颜色要和container背景色一样
-		border-top-color: transparent;
 		border-left-color: transparent;
 		border-right-color: transparent;
-		top: 0;
 		left: 0;
-		margin-top: -20px;
 		margin-left: 12px;
+	}
+	.tip-top  {
+		border-top-color: transparent;
+		top: 0;
+		margin-top: -20px;
+		display: inline-block;
+	}
+
+	.tip-bottom {
+		border-bottom-color: transparent;
+		bottom: 0;
+		margin-bottom: -20px;
+		display: none;
 	}
 
 	/*.close {
@@ -57,7 +81,7 @@
 		.item {
 			.box-flex(1);
 
-			a {
+			div {
 				text-decoration: none;
 				color: #f1f1f1;
 				display: block;
@@ -89,4 +113,15 @@
 
 .wangEditor-mobile-menu-container-open-btn {
 	width: 45px;
+}
+
+// 隐藏上面的tip，显示下面的tip
+.wangEditor-mobile-menu-container-open-btn1,
+.wangEditor-mobile-menu-container1 {
+	.tip-top {
+		display: none;
+	}
+	.tip-bottom {
+		display: inline-block;
+	}
 }

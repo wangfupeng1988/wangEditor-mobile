@@ -5,14 +5,18 @@
 	
 	box-sizing: border-box;
 	display: none;
-	position: fixed;
+	position: absolute;
 	width: 80%;
 	background-color: #fff;
 	border-radius: 5px;
 	padding: 10px;
-	top: 25%;
+	top: 0;
 	left: 50%;
 	box-shadow: 0 0 10px #666;
+
+	-webkit-transition: margin;
+	-o-transition: margin;
+	transition: margin;
 
 	.display-box();
 	.box-align(center);
