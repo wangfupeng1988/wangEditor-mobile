@@ -870,7 +870,7 @@ window.___E_mod(function (E, $) {
 				if (isQQMobile) {
 					// QQ浏览器、QQ扫描
 					// QQ浏览器通过 label for 的形式触发 file
-					return $('<label for="'+inputFileId+'"><i class="icon-wangEditor-m-picture"></i></label>');
+					return $('<label for="' + inputFileId + '"><i class="icon-wangEditor-m-picture"></i></label>');
 				} else {
 					// 其他浏览器，通过调用 file.click 的方式触发
 					return $('<div><i class="icon-wangEditor-m-picture"></i></div>');
