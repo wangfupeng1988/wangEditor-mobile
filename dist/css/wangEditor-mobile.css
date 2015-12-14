@@ -162,6 +162,10 @@
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
 }
+.wangEditor-mobile-menu-container-open-btn .item-container .item label,
+.wangEditor-mobile-menu-container .item-container .item label,
+.wangEditor-mobile-menu-container-open-btn1 .item-container .item label,
+.wangEditor-mobile-menu-container1 .item-container .item label,
 .wangEditor-mobile-menu-container-open-btn .item-container .item div,
 .wangEditor-mobile-menu-container .item-container .item div,
 .wangEditor-mobile-menu-container-open-btn1 .item-container .item div,
@@ -180,6 +184,10 @@
   -webkit-box-pack: center;
   -moz-box-pack: center;
 }
+.wangEditor-mobile-menu-container-open-btn .item-container .item label i,
+.wangEditor-mobile-menu-container .item-container .item label i,
+.wangEditor-mobile-menu-container-open-btn1 .item-container .item label i,
+.wangEditor-mobile-menu-container1 .item-container .item label i,
 .wangEditor-mobile-menu-container-open-btn .item-container .item div i,
 .wangEditor-mobile-menu-container .item-container .item div i,
 .wangEditor-mobile-menu-container-open-btn1 .item-container .item div i,

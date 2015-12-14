@@ -11,6 +11,7 @@ window.___E_mod(function (E, $) {
 		var idDebugger = testHostname === location.hostname;
 		var agent = window.navigator.userAgent;
 		var timeout = config.uploadTimeout || 10000;
+		var isQQMobile = agent.indexOf('QQ') > 0;
 
 		// 针对 test 地址，打印信息
 		function log(info) {
@@ -28,7 +29,17 @@ window.___E_mod(function (E, $) {
 			selected: false,
 
 			// 触发器
-			$trigger: $('<div><i class="icon-wangEditor-m-picture"></i></div>'),
+			$trigger: (function () {
+				if (isQQMobile) {
+					// QQ浏览器、QQ扫描
+					// QQ浏览器通过 label for 的形式触发 file
+					return $('<label for="'+inputFileId+'"><i class="icon-wangEditor-m-picture"></i></label>');
+				} else {
+					// 其他浏览器，通过调用 file.click 的方式触发
+					return $('<div><i class="icon-wangEditor-m-picture"></i></div>');
+				}
+			})(),
+			
 			// 包裹触发器的容器
 			$wrap: $('<div class="item"</div>'),
 

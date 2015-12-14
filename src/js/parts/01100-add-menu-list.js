@@ -22,7 +22,13 @@ window.___E_mod(function (E, $) {
 						return;
 					}
 
-					// 当前不是 list 状态，直接执行
+					if (!menuData.selected) {
+						// 如果当前状态不是list
+						// 执行命令前，先去掉 focus 的样式
+						self.$focusElem.removeClass('focus-elem');
+					}
+
+					// 执行命令
 					self.command('InsertUnorderedList', false, undefined, e);
 					
 				});
