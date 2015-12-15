@@ -155,6 +155,18 @@ window.___E_mod(function (E, $) {
 
 
 });
+// userAgent
+window.___E_mod(function (E, $) {
+
+	var agent = window.navigator.userAgent.toLowerCase();
+
+	E.isAndroid = agent.indexOf('android') > 0;
+
+	E.isUC = agent.indexOf('ucbrowser') > 0;
+
+	E.agent = agent;
+
+});
 // 初始化静态配置文件
 window.___E_mod(function (E, $) {
 
@@ -217,6 +229,9 @@ window.___E_mod(function (E, $) {
 
 		// 测试地址（在测试地址，编辑器会主动输出一些console.log信息）
 		testHostname: 'localhost',
+
+		// 上传图片时，如果浏览器不支持预览图片，则用以下图片代替
+		loadingImg: 'http://images2015.cnblogs.com/blog/138012/201512/138012-20151208194759027-506651939.gif',
 
 		// 通过 openBtn 打开菜单之后，N次不执行command就自动隐藏
 		tapNumForHideMenu: 3
@@ -842,13 +857,17 @@ window.___E_mod(function (E, $) {
 		var $body = self.$body;
 		var $txt = self.$txt;
 		var menus = self.menus;
+
 		var config = self.config;
 		var uploadImgUrl = config.uploadImgUrl || '';
 		var testHostname = config.testHostname || 'localhost';
+		var loadingImgUrl = config.loadingImg;
 		var idDebugger = testHostname === location.hostname;
-		var agent = window.navigator.userAgent;
+		
 		var timeout = config.uploadTimeout || 10000;
-		var isQQMobile = agent.indexOf('QQ') > 0;
+
+		var isAndroid = E.isAndroid;
+		var isUC = E.isUC;
 
 		// 针对 test 地址，打印信息
 		function log(info) {
@@ -867,13 +886,12 @@ window.___E_mod(function (E, $) {
 
 			// 触发器
 			$trigger: (function () {
-				if (isQQMobile) {
-					// QQ浏览器、QQ扫描
-					// QQ浏览器通过 label for 的形式触发 file
-					return $('<label for="' + inputFileId + '"><i class="icon-wangEditor-m-picture"></i></label>');
-				} else {
-					// 其他浏览器，通过调用 file.click 的方式触发
+				// 不同os、不同browser的情况不一样
+
+				if (isAndroid || isUC) {
 					return $('<div><i class="icon-wangEditor-m-picture"></i></div>');
+				} else {
+					return $('<label for="' + inputFileId + '"><i class="icon-wangEditor-m-picture"></i></label>');
 				}
 			})(),
 			
@@ -891,6 +909,7 @@ window.___E_mod(function (E, $) {
 				].join('');
 
 				var $container = $('<div style="display:none;"></div>');
+				// var $container = $('<div></div>');
 				$container.html(fromHtml);
 
 				// 渲染到页面中
@@ -931,6 +950,22 @@ window.___E_mod(function (E, $) {
 
 				// input 有文件选中时，显示预览图，提交 form
 				$inputFlie.on('change', function (e) {
+					// 判断改浏览器是否支持 FormData 和 fileReader
+					if (!window.FileReader || !window.FormData) {
+						alert('当前浏览器不支持html5中的 FileReader 和 FormData，无法上传图片');
+						return;
+					}
+
+					if (uploadImgUrl === '') {
+						// 没有配置上传图片的url
+						alert(
+							'没有配置 uploadImgUrl ，wangEditor 将无法上传图片。\n\n' + 
+							'想要配置上传图片，请参见文档说明。\n\n' + 
+							'不想要图片上传，可通过配置 menus 隐藏该功能。'
+						);
+						return;
+					}
+
 					var files = $inputFlie[0].files || [];
 					if (files.length === 0) {
 						return;
@@ -951,12 +986,14 @@ window.___E_mod(function (E, $) {
 							formData,
 							timeoutId;
 
-						if (uploadImgUrl === '') {
-							return;
-						}
-
 						// ---------- 显示预览 ----------
-						prevImgSrc =  window.URL.createObjectURL(file);
+						if (window.URL && window.URL.createObjectURL) {
+							// 如果浏览器支持预览本地图片功能，则预览本地图片
+							prevImgSrc = window.URL.createObjectURL(file);
+						} else {
+							// 如果浏览器不支持预览本地图片，则复制为一个配置的图片地址
+							prevImgSrc = loadingImgUrl;
+						}
 						// 生成预览图片，设置半透明（半透明先暂时不要）
 						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:1; max-width:100%;"/>');
 						log('生成预览图片，src是：' + prevImgSrc);
@@ -1044,22 +1081,6 @@ window.___E_mod(function (E, $) {
 				$trigger.on('singleTap', function (e) {
 					// singleTap需要验证
 					if (self.checkTapTime(e, 'img') === false) {
-						return;
-					}
-
-					// 判断改浏览器是否支持 FormData 和 fileReader
-					if (!window.FileReader || !window.FormData) {
-						alert('当前浏览器不支持html5中的 FileReader 和 FormData，无法上传图片');
-						return;
-					}
-
-					if (uploadImgUrl === '') {
-						// 没有配置上传图片的url
-						alert(
-							'没有配置 uploadImgUrl ，wangEditor 将无法上传图片。\n\n' + 
-							'想要配置上传图片，请参见文档说明。\n\n' + 
-							'不想要图片上传，可通过配置 menus 隐藏该功能。'
-						);
 						return;
 					}
 
