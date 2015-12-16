@@ -6,16 +6,10 @@ window.___E_mod(function (E, $) {
 		var $txt = self.$txt;
 		var menus = self.menus;
 
-		var config = self.config;
-		var uploadImgUrl = config.uploadImgUrl || '';
-		var testHostname = config.testHostname || 'localhost';
-		var loadingImgUrl = config.loadingImg;
-		var idDebugger = testHostname === location.hostname;
-		
-		var timeout = config.uploadTimeout || 10000;
-
 		var isAndroid = E.isAndroid;
 		var isUC = E.isUC;
+
+		var idDebugger = false;  // 默认为 false，下文可能修改
 
 		// 针对 test 地址，打印信息
 		function log(info) {
@@ -98,6 +92,16 @@ window.___E_mod(function (E, $) {
 
 				// input 有文件选中时，显示预览图，提交 form
 				$inputFlie.on('change', function (e) {
+
+					// 获取配置项内容
+					var config = self.config;
+					var uploadImgUrl = config.uploadImgUrl || '';
+					var testHostname = config.testHostname || 'localhost';
+					var loadingImgUrl = config.loadingImg;
+					var timeout = config.uploadTimeout || 10000;
+
+					idDebugger = testHostname === window.location.hostname;
+
 					// 判断改浏览器是否支持 FormData 和 fileReader
 					if (!window.FileReader || !window.FormData) {
 						alert('当前浏览器不支持html5中的 FileReader 和 FormData，无法上传图片');

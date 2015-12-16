@@ -53,7 +53,7 @@ window.___E_mod(function (E, $) {
 		],
 
 		// 上传图片
-		uploadImgUrl: '/upload',
+		uploadImgUrl: '',
 
 		// 上传文件的超时时间（默认 10s）
 		uploadTimeout: 10 * 1000,

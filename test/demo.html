@@ -84,17 +84,19 @@
 	<script type="text/javascript">
 	$(function () {
 
+		// 全局配置
+		// ___E.config.menus = ['bold', 'color', 'quote'];
+
 		// 生成编辑器
 		var editor = new ___E('textarea1');
 
-		// 编辑器对象
-		// console.log(editor);
-		// console.log(editor.config);
-
-		// 在此进行自定义配置...
+		// 自定义配置
+		editor.config.uploadImgUrl = '/upload';
 
 		// 初始化
 		editor.init();
+
+		console.log(editor.$txt);
 		
 	});
 	</script>
