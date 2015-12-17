@@ -1171,13 +1171,13 @@ window.___E_mod(function (E, $) {
 		
 		// 变量记录菜单容器（或者openbtn）的显示与隐藏
 		self.menuDisplayShow = false;
-		// $body.append($menuContainer);
-		$txt.prepend($menuContainer);
+		$body.append($menuContainer);
+		// $txt.prepend($menuContainer);
 
 		// 变量记录当前显示的是菜单还是openbtn
 		self.showMenu = false;
-		// $body.append($menuContainerOpenBtn);
-		$txt.prepend($menuContainerOpenBtn);
+		$body.append($menuContainerOpenBtn);
+		// $txt.prepend($menuContainerOpenBtn);
 	};
 
 });
@@ -1576,7 +1576,7 @@ window.___E_mod(function (E, $) {
 			self.showTipTop();
 
 			// 设置top
-			top = targetElemBottom - txtTop + scrollTop;
+			top = targetElemBottom + scrollTop;
 			// 下移 10px
 			top  = top + 10;
 
@@ -1588,21 +1588,21 @@ window.___E_mod(function (E, $) {
 			self.showTipBottom();
 
 			// 设置top
-			top = targetElemTop - txtTop + scrollTop;
+			top = targetElemTop + scrollTop;
 			// 上移 50px
 			top = top - 50;
 		}
 
 		// 如果 top 小于 0，则修改为 0（小于0说明隐藏在上方了）
-		if (top < scrollTop) {
-			top = scrollTop;
+		if (top < txtTop) {
+			top = txtTop;
 		}
 
 		if (positionFirst) {
 			// 第一次计算位置，直接设置样式
 			style = {
 				top: top + 'px',
-				left: '3px'
+				left: (txtLeft + 3) + 'px'
 			};
 
 			// 将当前的top存储下来

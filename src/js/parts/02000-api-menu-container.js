@@ -43,7 +43,7 @@ window.___E_mod(function (E, $) {
 			self.showTipTop();
 
 			// 设置top
-			top = targetElemBottom - txtTop + scrollTop;
+			top = targetElemBottom + scrollTop;
 			// 下移 10px
 			top  = top + 10;
 
@@ -55,21 +55,21 @@ window.___E_mod(function (E, $) {
 			self.showTipBottom();
 
 			// 设置top
-			top = targetElemTop - txtTop + scrollTop;
+			top = targetElemTop + scrollTop;
 			// 上移 50px
 			top = top - 50;
 		}
 
 		// 如果 top 小于 0，则修改为 0（小于0说明隐藏在上方了）
-		if (top < scrollTop) {
-			top = scrollTop;
+		if (top < txtTop) {
+			top = txtTop;
 		}
 
 		if (positionFirst) {
 			// 第一次计算位置，直接设置样式
 			style = {
 				top: top + 'px',
-				left: '3px'
+				left: (txtLeft + 3) + 'px'
 			};
 
 			// 将当前的top存储下来

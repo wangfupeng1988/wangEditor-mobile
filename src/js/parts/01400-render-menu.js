@@ -48,13 +48,13 @@ window.___E_mod(function (E, $) {
 		
 		// 变量记录菜单容器（或者openbtn）的显示与隐藏
 		self.menuDisplayShow = false;
-		// $body.append($menuContainer);
-		$txt.prepend($menuContainer);
+		$body.append($menuContainer);
+		// $txt.prepend($menuContainer);
 
 		// 变量记录当前显示的是菜单还是openbtn
 		self.showMenu = false;
-		// $body.append($menuContainerOpenBtn);
-		$txt.prepend($menuContainerOpenBtn);
+		$body.append($menuContainerOpenBtn);
+		// $txt.prepend($menuContainerOpenBtn);
 	};
 
 });
