@@ -63,9 +63,6 @@ window.___E_mod(function (E, $) {
 
 		// 上传图片时，如果浏览器不支持预览图片，则用以下图片代替
 		loadingImg: 'http://images2015.cnblogs.com/blog/138012/201512/138012-20151208194759027-506651939.gif',
-
-		// 通过 openBtn 打开菜单之后，N次不执行command就自动隐藏
-		tapNumForHideMenu: 3
 	};
 	
 });

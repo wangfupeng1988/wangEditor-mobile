@@ -62,10 +62,7 @@
 .icon-wangEditor-m-checkbox-checked:before {
 	content: "\e900";
 }
-.wangEditor-mobile-menu-container-open-btn,
-.wangEditor-mobile-menu-container,
-.wangEditor-mobile-menu-container-open-btn1,
-.wangEditor-mobile-menu-container1 {
+.wangEditor-mobile-menu-container {
   box-sizing: border-box;
   position: absolute;
   z-index: 9999;
@@ -79,43 +76,14 @@
   -webkit-transition: margin .15s;
   -o-transition: margin .15s;
   transition: margin .15s;
-  /*.close {
-		position: absolute;
-		z-index: 10000;
-		top: -23px;
-		right: -25px;
-		height: 30px;
-		width: 30px;
-		text-align: center;
-		border-radius: 50%;
-		border: 1px solid #f1f1f1;
-		background-color: #666;
-		box-shadow: 0 0 5px #999;
-		
-		i {
-			text-decoration: none;
-			color: #f1f1f1;
-			display: inline-block;
-			padding: 2px 0 0 0;
-		}
-	}*/
 }
-.wangEditor-mobile-menu-container-open-btn *,
-.wangEditor-mobile-menu-container *,
-.wangEditor-mobile-menu-container-open-btn1 *,
-.wangEditor-mobile-menu-container1 * {
+.wangEditor-mobile-menu-container * {
   outline: none;
 }
-.wangEditor-mobile-menu-container-open-btn *:focus,
-.wangEditor-mobile-menu-container *:focus,
-.wangEditor-mobile-menu-container-open-btn1 *:focus,
-.wangEditor-mobile-menu-container1 *:focus {
+.wangEditor-mobile-menu-container *:focus {
   outline: none;
 }
-.wangEditor-mobile-menu-container-open-btn .tip,
-.wangEditor-mobile-menu-container .tip,
-.wangEditor-mobile-menu-container-open-btn1 .tip,
-.wangEditor-mobile-menu-container1 .tip {
+.wangEditor-mobile-menu-container .tip {
   position: absolute;
   width: 0;
   height: 0;
@@ -124,29 +92,11 @@
   border-right-color: transparent;
   left: 0;
   margin-left: 12px;
-}
-.wangEditor-mobile-menu-container-open-btn .tip-top,
-.wangEditor-mobile-menu-container .tip-top,
-.wangEditor-mobile-menu-container-open-btn1 .tip-top,
-.wangEditor-mobile-menu-container1 .tip-top {
-  border-top-color: transparent;
-  top: 0;
-  margin-top: -20px;
-  display: inline-block;
-}
-.wangEditor-mobile-menu-container-open-btn .tip-bottom,
-.wangEditor-mobile-menu-container .tip-bottom,
-.wangEditor-mobile-menu-container-open-btn1 .tip-bottom,
-.wangEditor-mobile-menu-container1 .tip-bottom {
   border-bottom-color: transparent;
   bottom: 0;
   margin-bottom: -20px;
-  display: none;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container,
-.wangEditor-mobile-menu-container .item-container,
-.wangEditor-mobile-menu-container-open-btn1 .item-container,
-.wangEditor-mobile-menu-container1 .item-container {
+.wangEditor-mobile-menu-container .item-container {
   display: box;
   display: -webkit-box;
   display: -moz-box;
@@ -154,22 +104,13 @@
   -moz-box-align: center;
   box-align: center;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container .item,
-.wangEditor-mobile-menu-container .item-container .item,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item,
-.wangEditor-mobile-menu-container1 .item-container .item {
+.wangEditor-mobile-menu-container .item-container .item {
   box-flex: 1;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container .item label,
 .wangEditor-mobile-menu-container .item-container .item label,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item label,
-.wangEditor-mobile-menu-container1 .item-container .item label,
-.wangEditor-mobile-menu-container-open-btn .item-container .item div,
-.wangEditor-mobile-menu-container .item-container .item div,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item div,
-.wangEditor-mobile-menu-container1 .item-container .item div {
+.wangEditor-mobile-menu-container .item-container .item div {
   text-decoration: none;
   color: #f1f1f1;
   display: block;
@@ -184,44 +125,21 @@
   -webkit-box-pack: center;
   -moz-box-pack: center;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container .item label i,
 .wangEditor-mobile-menu-container .item-container .item label i,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item label i,
-.wangEditor-mobile-menu-container1 .item-container .item label i,
-.wangEditor-mobile-menu-container-open-btn .item-container .item div i,
-.wangEditor-mobile-menu-container .item-container .item div i,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item div i,
-.wangEditor-mobile-menu-container1 .item-container .item div i {
+.wangEditor-mobile-menu-container .item-container .item div i {
   box-flex: 1;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   opacity: 1;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container .item .selected,
-.wangEditor-mobile-menu-container .item-container .item .selected,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .item .selected,
-.wangEditor-mobile-menu-container1 .item-container .item .selected {
+.wangEditor-mobile-menu-container .item-container .item .selected {
   color: #666;
 }
-.wangEditor-mobile-menu-container-open-btn .item-container .gap,
-.wangEditor-mobile-menu-container .item-container .gap,
-.wangEditor-mobile-menu-container-open-btn1 .item-container .gap,
-.wangEditor-mobile-menu-container1 .item-container .gap {
+.wangEditor-mobile-menu-container .item-container .gap {
   width: 1px;
   height: 40px;
   margin-top: -1px;
   background-color: #f1f1f1;
-}
-.wangEditor-mobile-menu-container-open-btn {
-  width: 45px;
-}
-.wangEditor-mobile-menu-container-open-btn1 .tip-top,
-.wangEditor-mobile-menu-container1 .tip-top {
-  display: none;
-}
-.wangEditor-mobile-menu-container-open-btn1 .tip-bottom,
-.wangEditor-mobile-menu-container1 .tip-bottom {
-  display: inline-block;
 }
 
 .wangEditor-mobile-modal {

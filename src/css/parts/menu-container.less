@@ -1,7 +1,4 @@
-.wangEditor-mobile-menu-container-open-btn,
-.wangEditor-mobile-menu-container,
-.wangEditor-mobile-menu-container-open-btn1,
-.wangEditor-mobile-menu-container1 {
+.wangEditor-mobile-menu-container {
 
 	// 引用通用样式
 	@import 'box-flex.less';
@@ -38,41 +35,10 @@
 		border-right-color: transparent;
 		left: 0;
 		margin-left: 12px;
-	}
-	.tip-top  {
-		border-top-color: transparent;
-		top: 0;
-		margin-top: -20px;
-		display: inline-block;
-	}
-
-	.tip-bottom {
 		border-bottom-color: transparent;
 		bottom: 0;
 		margin-bottom: -20px;
-		display: none;
 	}
-
-	/*.close {
-		position: absolute;
-		z-index: 10000;
-		top: -23px;
-		right: -25px;
-		height: 30px;
-		width: 30px;
-		text-align: center;
-		border-radius: 50%;
-		border: 1px solid #f1f1f1;
-		background-color: #666;
-		box-shadow: 0 0 5px #999;
-		
-		i {
-			text-decoration: none;
-			color: #f1f1f1;
-			display: inline-block;
-			padding: 2px 0 0 0;
-		}
-	}*/
 
 	.item-container {
 		.display-box();
@@ -109,20 +75,5 @@
 			margin-top: -1px;
 			background-color: #f1f1f1;
 		}
-	}
-}
-
-.wangEditor-mobile-menu-container-open-btn {
-	width: 45px;
-}
-
-// 隐藏上面的tip，显示下面的tip
-.wangEditor-mobile-menu-container-open-btn1,
-.wangEditor-mobile-menu-container1 {
-	.tip-top {
-		display: none;
-	}
-	.tip-bottom {
-		display: inline-block;
 	}
 }

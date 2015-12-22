@@ -6,8 +6,6 @@ window.___E_mod(function (E, $) {
 		var $txt = self.$txt;
 		var $menuContainer = self.$menuContainer;
 		var menuContainer = $menuContainer.get(0);
-		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
-		var menuContainerOpenBtn = $menuContainerOpenBtn.get(0);
 		var srollTime = Date.now();
 
 		// 处理点击 $txt 的选区
@@ -70,9 +68,6 @@ window.___E_mod(function (E, $) {
 				return;
 			}
 
-			// 计算点击次数（N次不command即隐藏菜单为 openBtn 形式）
-			self.setTapNumForHideMenu('tap');
-
 			// 根据点击的位置，对菜单栏进行定位
 			self.setMenuContainerPosition();
 
@@ -127,7 +122,7 @@ window.___E_mod(function (E, $) {
 			self.isFocus = false;
 
 			var explicitOriginalTarget = e.explicitOriginalTarget;
-			if (menuContainer.contains(explicitOriginalTarget) || menuContainerOpenBtn.contains(explicitOriginalTarget)) {
+			if (menuContainer.contains(explicitOriginalTarget)) {
 				// firefox 中，点击菜单会导致 $txt blur
 				// e.explicitOriginalTarget 有值，并且包含在菜单容器中，证明是 ff 点击菜单所致的 blur
 				
@@ -144,13 +139,7 @@ window.___E_mod(function (E, $) {
 				// 隐藏菜单 fn
 				self.hideMenuContainer();
 			}
-		});
-
-		// // 阻止 click 事件，防止 tap 点透
-		// $txt.on('click', function (e) {
-		// 	e.preventDefault();
-		// 	e.stopPropagation();
-		// });
+		}); // $txt-blur end
 	};
 
 });

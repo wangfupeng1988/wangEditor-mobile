@@ -68,8 +68,5 @@ window.___E_mod(function (E, $) {
 
 		// 隐藏菜单栏
 		self.hideMenuContainer();
-
-		// 计算点击次数（N次不command即隐藏菜单为 openBtn 形式）
-		self.setTapNumForHideMenu('command');
 	};
 });

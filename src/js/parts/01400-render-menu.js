@@ -6,7 +6,6 @@ window.___E_mod(function (E, $) {
 		var menus = self.menus;
 		var $menuContainer = self.$menuContainer;
 		var $menuItemContainer = self.$menuItemContainer;
-		var $menuContainerOpenBtn = self.$menuContainerOpenBtn;
 		var $txt = self.$txt;
 		var $gap = $('<div class="gap"></div>');
 		var $body = self.$body;
@@ -44,17 +43,10 @@ window.___E_mod(function (E, $) {
 
 		// 默认隐藏
 		$menuContainer.hide();
-		$menuContainerOpenBtn.hide();
 		
-		// 变量记录菜单容器（或者openbtn）的显示与隐藏
+		// 变量记录菜单容器的显示与隐藏
 		self.menuDisplayShow = false;
 		$body.append($menuContainer);
-		// $txt.prepend($menuContainer);
-
-		// 变量记录当前显示的是菜单还是openbtn
-		self.showMenu = false;
-		$body.append($menuContainerOpenBtn);
-		// $txt.prepend($menuContainerOpenBtn);
 	};
 
 });

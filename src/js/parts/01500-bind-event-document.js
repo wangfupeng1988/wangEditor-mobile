@@ -20,14 +20,6 @@ window.___E_mod(function (E, $) {
 			self.hideMenuContainer();
 
 		});
-
-		// tap时要隐藏菜单
-		$document.on('tap', function (e) {
-			
-			// 隐藏菜单
-			// self.hideMenuContainer();
-
-		});
 	};
 
 });
