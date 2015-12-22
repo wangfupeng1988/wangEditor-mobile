@@ -133,7 +133,8 @@ window.___E_mod(function (E, $) {
 					reader.onload = function(e){
 						var base64 = e.target.result || this.result,
 							prevImgSrc,
-							prveImgId = 'img' + Math.random().toString().slice(2),
+							prveImgContainerId = 'div' + Math.random().toString().slice(2),
+							prevImgInfoId = 'info' +  Math.random().toString().slice(2),
 							xhr,
 							formData,
 							timeoutId;
@@ -142,12 +143,25 @@ window.___E_mod(function (E, $) {
 						if (window.URL && window.URL.createObjectURL) {
 							// 如果浏览器支持预览本地图片功能，则预览本地图片
 							prevImgSrc = window.URL.createObjectURL(file);
+
+							// 生成预览图片，设置半透明
+							$focusElem.after(
+								'<div class="previmg-container" id="' + prveImgContainerId + '">' + 
+								'   <p class="info" id="' + prevImgInfoId + '">上传中...</p>' +
+								'	<img src="' + prevImgSrc + '" style="opacity:0.2; max-width:100%;"/>' + 
+								'</div>'
+							);
 						} else {
 							// 如果浏览器不支持预览本地图片，则复制为一个配置的图片地址
 							prevImgSrc = loadingImgUrl;
+
+							// 生成预览图片
+							$focusElem.after(
+								'<div class="previmg-container" id="' + prveImgContainerId + '">' + 
+								'	<img src="' + prevImgSrc + '" style="max-width:100%;"/>' + 
+								'</div>'
+							);
 						}
-						// 生成预览图片，设置半透明（半透明先暂时不要）
-						$focusElem.after('<img id="' + prveImgId + '" src="' + prevImgSrc + '" style="opacity:1; max-width:100%;"/>');
 						log('生成预览图片，src是：' + prevImgSrc);
 
 						// ---------- 上传到服务器 ----------
@@ -158,8 +172,8 @@ window.___E_mod(function (E, $) {
 			            function timeoutCallback() {
 			            	log('访问超时（配置的超时事件是：'+ timeout +'）');
 
-			            	var $prevImg = $('#' + prveImgId);
-			            	$prevImg.remove();
+			            	var $prevImgContainer = $('#' + prveImgContainerId);
+			            	$prevImgContainer.remove();
 			            	if (xhr.abort) {
 			            		xhr.abort();
 			            	}
@@ -184,8 +198,9 @@ window.___E_mod(function (E, $) {
 
 			            	var resultSrc = xhr.responseText; //服务器端要返回图片url地址
 			            	var erroInfo;
-			            	var $prevImg = $('#' + prveImgId);
+			            	var $prevImgContainer = $('#' + prveImgContainerId);
 			            	var loadImg;
+			            	var $loadImg;
 
 			            	log('服务器端的返回数据为：' + resultSrc);
 
@@ -198,7 +213,7 @@ window.___E_mod(function (E, $) {
 			            		alert('上传图片错误: \n' + erroInfo);
 
 			            		// 移除预览图片
-			            		$prevImg.remove();
+			            		$prevImgContainer.remove();
 
 			            	} else {
 			            		// 返回正确的图片地址
@@ -207,13 +222,23 @@ window.___E_mod(function (E, $) {
 			            		log('准备下载该图片...');
 			            		
 			            		// 下载图片，下载完成后赋值到编辑器中
-			            		
+			            		$('#' + prevImgInfoId).text('加载中...');
+			
 			            		loadImg = document.createElement('img');
 			            		loadImg.src = resultSrc;
 			            		loadImg.onload = function () {
 			            			log('下载完成，正式呈现在编辑区域');
-			            			$prevImg.attr('src', resultSrc);
-			            			$prevImg.css({'opacity': '1'});
+		
+									$loadImg = $(loadImg);
+									$loadImg.css('max-width', '100%');
+			            			$prevImgContainer.after($loadImg);
+			            			$prevImgContainer.remove();
+			            		};
+			            		loadImg.onerror = function () {
+			            			log('图片加载失败，请确定这个url是否能成功得到图片：' + resultSrc);
+			            			
+			            			alert('图片加载失败');
+			            			$prevImgContainer.remove();
 			            		};
 			            	}
 			            };
