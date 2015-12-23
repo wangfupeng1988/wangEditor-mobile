@@ -174,6 +174,7 @@ window.___E_mod(function (E, $) {
 
 			            	var $prevImgContainer = $('#' + prveImgContainerId);
 			            	$prevImgContainer.remove();
+	
 			            	if (xhr.abort) {
 			            		xhr.abort();
 			            	}

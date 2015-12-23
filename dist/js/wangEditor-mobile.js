@@ -1015,6 +1015,7 @@ window.___E_mod(function (E, $) {
 
 			            	var $prevImgContainer = $('#' + prveImgContainerId);
 			            	$prevImgContainer.remove();
+	
 			            	if (xhr.abort) {
 			            		xhr.abort();
 			            	}
@@ -1276,7 +1277,7 @@ window.___E_mod(function (E, $) {
 				return;
 			}
 
-			if ($target.hasClass('wangEditor-mobile-txt')) {
+			if ($target.get(0) === $txt.get(0)) {
 				// 如果当前选中的编辑区域，则隐藏菜单，返回
 				self.hideMenuContainer();
 				return;
@@ -1320,6 +1321,12 @@ window.___E_mod(function (E, $) {
 		$txt.on('keydown', function (e) {
 			// 隐藏菜单
 			self.hideMenuContainer();
+
+			// 删除并且没有内容的时候，就禁止再删除了
+			var html = $txt.html();
+			if (e.keyCode === 8 && /^<p[^<>]*><br><\/p>$/.test(html)) {
+				e.preventDefault();
+			}
 		});
 
 		// longtap doubletap 隐藏菜单
@@ -1432,6 +1439,7 @@ window.___E_mod(function (E, $) {
 
 		// 获取源码
 		sourceCode = $txtClone.html();
+		sourceCode = sourceCode.replace(/\s?class=""/g, '');
 		$textarea.val(sourceCode);
 	};
 

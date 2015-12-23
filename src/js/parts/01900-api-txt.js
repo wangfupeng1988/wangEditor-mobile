@@ -37,6 +37,7 @@ window.___E_mod(function (E, $) {
 
 		// 获取源码
 		sourceCode = $txtClone.html();
+		sourceCode = sourceCode.replace(/\s?class=""/g, '');
 		$textarea.val(sourceCode);
 	};
 
