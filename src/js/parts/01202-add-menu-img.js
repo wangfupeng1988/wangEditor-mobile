@@ -29,7 +29,6 @@ window.___E_mod(function (E, $) {
 			// 触发器
 			$trigger: (function () {
 				// 不同os、不同browser的情况不一样
-
 				if (isAndroid || isUC) {
 					return $('<div><i class="icon-wangEditor-m-picture"></i></div>');
 				} else {

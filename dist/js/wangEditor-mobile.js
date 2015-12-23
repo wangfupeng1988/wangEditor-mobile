@@ -870,7 +870,6 @@ window.___E_mod(function (E, $) {
 			// 触发器
 			$trigger: (function () {
 				// 不同os、不同browser的情况不一样
-
 				if (isAndroid || isUC) {
 					return $('<div><i class="icon-wangEditor-m-picture"></i></div>');
 				} else {
@@ -1488,7 +1487,7 @@ window.___E_mod(function (E, $) {
 			// 停靠在编辑器区域上方
 			top = txtTop;
 		}
-		top = top - menuHeight - 15;
+		top = top - 55;  // 上移 55px 即菜单栏的高度
 
 
 		// 设置菜单的样式，定位

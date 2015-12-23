@@ -26,7 +26,7 @@ window.___E_mod(function (E, $) {
 			// 停靠在编辑器区域上方
 			top = txtTop;
 		}
-		top = top - menuHeight - 15;
+		top = top - 55;  // 上移 55px 即菜单栏的高度
 
 
 		// 设置菜单的样式，定位
