@@ -15,34 +15,78 @@
 	
 	<style type="text/css">
 
+		body {
+			background-color:#f1f1f1;
+			text-shadow: 0 0 2px #ccc;
+		}
+
+		.wangEditor-mobile-menu-container {
+			text-shadow: none;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		.title {
+			padding: 15px 0;
+			text-align: center;
+			opacity: 0.7;
+		}
+
 		.container {
 			width:100%; 
-			height:300px; 
+			height:420px; 
 			border:1px solid #ccc;
+			background-color: #fff;
+			text-align: left;
+			box-shadow: 0 0 10px #ccc;
+			text-shadow: none;
+		}
+
+		footer {
+			width: 100%;
+			text-align: center;
+			padding: 10px 0;
+			opacity: 0.6;
+			margin-top: 10px;
 		}
 
 	</style>
 </head>
 <body>
-	<p>
+	<div class="title">
 		<b>wangEditor-mobile</b> 
-		适合手指操作的编辑器
-	</p>
-
-	<div class="container">
-		<textarea id="textarea1" style="width:100%;height:100%;">
-			<p>请输入内容……</p>
-			<h3>滕王阁序</h3>
-			<p>豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。</p>
-		</textarea>
+		——适用于手机的编辑器
 	</div>
-
-	<p>
-		by 
+	<center>
+		<div class="container">
+			<textarea id="textarea1" style="width:100%;height:100%;">
+				<h3>济南的冬天</h3>
+				<p><font color="#ff0000">对于一个在北平住惯的人，像我，冬天要是不刮风，便觉得是奇迹；济南的冬天是没有风声的。</font></p>
+				<p>对于一个刚由伦敦回来的人，像我，冬天要能看得见日光，便觉得是怪事；济南的冬天是响晴的……<img src="http://wangeditor.github.io/expressions/20.gif"></p>
+				<blockquote style="display: block; border-left-width: 5px; border-left-style: solid; border-left-color: rgb(208, 229, 242); padding: 4px 0px 4px 10px; margin: 4px 0px; background-color: rgb(241, 241, 241);">
+					老舍1930年前后来到山东，先后在济南齐鲁大学和青岛山东大学任教7年之久，山东被称为他的“第二故乡”。
+				</blockquote>
+				<strong>作者其他作品：</strong>
+				<ul>
+					<li>骆驼祥子</li>
+					<li>茶馆</li>
+					<li>四世同堂</li>
+				</ul>
+				<p><br></p>
+				<img src="img/daminghu.png" style="max-width:100%;">
+				<p>（图为大明湖雪景）</p>
+				<p><br></p>
+			</textarea>
+		</div>
+	</center>
+	<footer>
+		&copy; 2015
 		<a href="http://wangeditor.github.io/m/index.html" target="_blank">
 			wangEditor.github.io/m
 		</a>
-	</p>
+	</footer>
 
 	<script type="text/javascript" src="../dist/js/lib/zepto.js"></script>
 	<script type="text/javascript" src="../dist/js/lib/zepto.touch.js"></script>
@@ -58,6 +102,8 @@
 
 		// 自定义配置
 		editor.config.uploadImgUrl = '/upload';
+
+		// editor.config.menus = ['bold', 'quote', 'list','img'];
 
 		// 初始化
 		editor.init();

@@ -1323,7 +1323,7 @@ window.___E_mod(function (E, $) {
 
 			// 删除并且没有内容的时候，就禁止再删除了
 			var html = $txt.html();
-			if (e.keyCode === 8 && /^<p[^<>]*><br><\/p>$/.test(html)) {
+			if (e.keyCode === 8 && /^<(\w+)[^<>]*><br><\/\1>$/.test(html)) {
 				e.preventDefault();
 			}
 		});
