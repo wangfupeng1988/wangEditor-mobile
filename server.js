@@ -66,7 +66,7 @@ http.createServer(function (req, res) {
 					// 保存成功
 					console.log('fs.rename done');
 					// 拼接图片url地址
-					result = 'http://192.168.1.121:' + port + '/' + uploadfoldername + '/' + filename;
+					result = 'http://localhost:' + port + '/' + uploadfoldername + '/' + filename;
 				}
 				
 				// 返回结果

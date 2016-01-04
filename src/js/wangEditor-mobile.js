@@ -1074,12 +1074,18 @@ window.___E_mod(function (E, $) {
 									$loadImg.css('max-width', '100%');
 			            			$prevImgContainer.after($loadImg);
 			            			$prevImgContainer.remove();
+
+			            			// 保存内容
+			            			self.saveSourceCode();
 			            		};
 			            		loadImg.onerror = function () {
 			            			log('图片加载失败，请确定这个url是否能成功得到图片：' + resultSrc);
 			            			
 			            			alert('图片加载失败');
 			            			$prevImgContainer.remove();
+
+			            			// 保存内容
+			            			self.saveSourceCode();
 			            		};
 			            	}
 			            };
