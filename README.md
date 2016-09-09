@@ -1,5 +1,7 @@
 ## wangEditor-mobile 真正适用于手指触摸的富文本编辑器！
 
+（该项目作者暂时不维护，可供学习交流，慎用于项目中，原因[参见这里](http://www.kancloud.cn/wangfupeng/wangeditor2/139064)）
+
 **wangEditor-mobile** 是一款专门为手机、平板操作而设计、开发的富文本编辑器。它和传统编辑器相比，应该适用于小屏幕、手指触摸操作。
 
 <img src="http://box.kancloud.cn/2015-12-16_5671787d60766.png" width="300" style="width:300px">
